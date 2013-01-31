@@ -108,7 +108,7 @@ class ServerOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
         // referee password
         $this->refereePass = new Inputbox("refereePass");
-        $this->refereePass->setLabel("Password for spectators");
+        $this->refereePass->setLabel("Referee password");
         $this->refereePass->setText($server->refereePassword);
         $this->frameInputbox->addComponent($this->refereePass);
     }
