@@ -8,7 +8,7 @@ class Button extends \ManiaLive\Gui\Control
 	private $label;
 	private $button;
                 
-	function __construct($sizeX=35, $sizeY=7)
+	function __construct($sizeX=25, $sizeY=7)
 	{
                 
                 $config = Config::getInstance();
@@ -16,7 +16,7 @@ class Button extends \ManiaLive\Gui\Control
                 $this->button->setAlign('center', 'center');
                 $this->button->setImage($config->button);
                 $this->button->setImageFocus($config->buttonActive);
-                $this->button->setScriptEvents(true);
+                $this->button->setScriptEvents(true);                
                 $this->addComponent($this->button);
                 
                 $this->label = new \ManiaLib\Gui\Elements\Label($sizeX, $sizeY);
