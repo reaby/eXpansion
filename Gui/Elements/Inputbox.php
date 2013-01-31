@@ -20,7 +20,7 @@ class Inputbox extends \ManiaLive\Gui\Control
                 
                 $this->label = new \ManiaLib\Gui\Elements\Label($sizeX, 3);
 		$this->label->setAlign('left', 'center');
-		$this->label->setStyle("TextCardSmallScores2");		                
+		//$this->label->setStyle("TextCardInfoSmall");		                
 		$this->addComponent($this->label);
                 
 		$this->setSize($sizeX, 10);
@@ -45,7 +45,7 @@ class Inputbox extends \ManiaLive\Gui\Control
 	
 	function setLabel($text)
 	{
-		$this->label->setText('$999'.$text);
+		$this->label->setText('$222'.$text);
 	}
         
         // todo: Get the actual right text value of the element

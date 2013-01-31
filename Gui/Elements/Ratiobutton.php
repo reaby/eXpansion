@@ -25,7 +25,7 @@ class Ratiobutton extends \ManiaLive\Gui\Control
                 
                 $this->label = new \ManiaLib\Gui\Elements\Label($textWidth, 4);
 		$this->label->setAlign('left', 'center');
-		$this->label->setStyle("TextCardSmallScores2");		                
+		//$this->label->setStyle("TextCardInfoSmall");		                
 		$this->addComponent($this->label);
                 
 		$this->setSize($sizeX+$textWidth, $sizeY);
@@ -65,7 +65,7 @@ class Ratiobutton extends \ManiaLive\Gui\Control
 	
 	function setText($text)
 	{
-		$this->label->setText('$aaa'.$text);
+		$this->label->setText('$222'.$text);
 	}
 	
         function toggleActive($login) {

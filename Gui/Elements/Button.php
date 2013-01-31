@@ -21,9 +21,9 @@ class Button extends \ManiaLive\Gui\Control
                 
                 $this->label = new \ManiaLib\Gui\Elements\Label($sizeX, $sizeY);
 		$this->label->setAlign('center', 'center');
-		$this->label->setStyle("TextCardSmallScores2");
-		$this->label->setFocusAreaColor1('555');
-		$this->label->setFocusAreaColor2('555');
+		//$this->label->setStyle("TextCardInfoSmall");
+		$this->label->setFocusAreaColor1('000');
+		$this->label->setFocusAreaColor2('000');
                 $this->label->setScriptEvents(true);
 		$this->addComponent($this->label);
                 
@@ -50,7 +50,7 @@ class Button extends \ManiaLive\Gui\Control
 	
 	function setText($text)
 	{
-		$this->label->setText('$fff'.$text);
+		$this->label->setText('$000'.$text);
 	}
 	
 	function setAction($action)
