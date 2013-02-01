@@ -17,6 +17,7 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
 
     public function onPlayerDisconnect($login) {
         Gui\Windows\Maplist::Erase($login);
+        Gui\Windows\AddMaps::Erase($login);
     }
 
     public function buildMenu() {

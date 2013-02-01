@@ -20,7 +20,8 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
 
     public function buildMenu() {
         $this->callPublicMethod('Standard\Menubar', 'initMenu', \ManiaLib\Gui\Elements\Icons128x128_1::Options);
-        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Options', array($this, 'serverOptions'), true);        
+        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Server Options', array($this, 'serverOptions'), true);        
+        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Match Settings', array($this, 'matchSettings'), true);        
     }
     
     public function serverOptions($login) {
@@ -28,6 +29,14 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
           $window->setTitle('Server Options');
           $window->centerOnScreen();
           $window->setSize(160,100);
+          $window->show();            
+    }
+
+    public function matchSettings($login) {
+          $window = Gui\Windows\MatchSettings::Create($login);
+          $window->setTitle('Match Settings');
+          $window->centerOnScreen();
+          $window->setSize(120,100);
           $window->show();            
     }
 

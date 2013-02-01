@@ -8,33 +8,16 @@ use \ManiaLib\Utils\Formatting;
 class MxMap extends \ManiaLive\Gui\Control {
 
     private $bg;
-    private $queueButton;
-    private $goButton;
     private $label;
     private $time;
-    private $chooseNextMap;
-    private $gotoMap;
-    private $removeMap;
+    private $addAction;
     private $frame;
 
-    function __construct($indexNumber, \DedicatedApi\Structures\Map $map, $controller, $isAdmin) {
+    function __construct($indexNumber, \ManiaLivePlugins\eXpansion\ManiaExchange\Structures\MxMap $map, $controller, $isAdmin) {
         $sizeX = 120;
         $sizeY = 4;
         $this->isAdmin = $isAdmin;
-        $this->chooseNextMap = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'chooseNextMap'), $indexNumber);
-        $this->gotoMap = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'gotoMap'), $indexNumber);
-        $this->removeMap = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'removeMap'), $indexNumber);
-
-        $this->bg = new \ManiaLib\Gui\Elements\Quad($sizeX, $sizeY);
-        $this->bg->setAlign('left', 'center');
-        if ($indexNumber % 2 == 0) {
-            $this->bg->setBgcolor('fff4');
-        } else {
-            $this->bg->setBgcolor('77f4');
-        }
-        $this->bg->setScriptEvents(true);
-        // $this->addComponent($this->bg);
-
+        $this->addAction = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'addMap'), $indexNumber);
 
         $this->frame = new \ManiaLive\Gui\Controls\Frame();
         $this->frame->setSize($sizeX, $sizeY);
@@ -44,7 +27,7 @@ class MxMap extends \ManiaLive\Gui\Control {
         $spacer->setSize(4, 4);
         $spacer->setAlign("center", "center2");
         $spacer->setStyle("Icons128x128_1");
-        $spacer->setSubStyle("Challenge");
+        $spacer->setSubStyle("United");
         $this->frame->addComponent($spacer);
 
         $spacer = new \ManiaLib\Gui\Elements\Quad();
@@ -52,17 +35,29 @@ class MxMap extends \ManiaLive\Gui\Control {
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
         //$this->frame->addComponent($spacer);
 
-        $this->label = new \ManiaLib\Gui\Elements\Label(90, 4);
+        $this->label = new \ManiaLib\Gui\Elements\Label(70, 4);
         $this->label->setAlign('left', 'center');
         $this->label->setText(Formatting::stripColors(Formatting::stripStyles($map->name)));
         $this->label->setScale(0.8);
         $this->frame->addComponent($this->label);
 
-        $this->time = new \ManiaLib\Gui\Elements\Label(16, 4);
+        $info = new \ManiaLib\Gui\Elements\Label(16, 4);
+        $info->setAlign('left', 'center');
+        $info->setScale(0.8);
+        $info->setText($map->username);
+        $this->frame->addComponent($info);
+
+        $this->time = new \ManiaLib\Gui\Elements\Label(20, 4);
         $this->time->setAlign('left', 'center');
         $this->time->setScale(0.8);
-        $this->time->setText(\ManiaLive\Utilities\Time::fromTM($map->goldTime));
+        $this->time->setText($map->lengthName);
         $this->frame->addComponent($this->time);
+
+        $info = new \ManiaLib\Gui\Elements\Label(4, 4);
+        $info->setAlign('left', 'center');
+        $info->setScale(0.8);
+        $info->setText($map->awardCount);
+        $this->frame->addComponent($info);
 
         $spacer = new \ManiaLib\Gui\Elements\Quad();
         $spacer->setSize(4, 4);
@@ -70,18 +65,12 @@ class MxMap extends \ManiaLive\Gui\Control {
 
         $this->frame->addComponent($spacer);
 
-        $this->queueButton = new MyButton(16, 6);
-        $this->queueButton->setText("Queue");
-        $this->queueButton->setAction($this->chooseNextMap);
-        $this->queueButton->setScale(0.6);
-        $this->frame->addComponent($this->queueButton);
-
         if ($this->isAdmin) {
-            $this->goButton = new MyButton(16, 6);
-            $this->goButton->setText("Go now");
-            $this->goButton->setAction($this->gotoMap);
-            $this->goButton->setScale(0.6);
-            $this->frame->addComponent($this->goButton);
+            $this->addButton = new MyButton(16, 6);
+            $this->addButton->setText("Install");
+            $this->addButton->setAction($this->addAction);
+            $this->addButton->setScale(0.6);
+            $this->frame->addComponent($this->addButton);
         }
 
         // disabled... todo: get remove button to refresh the tracklist
@@ -99,7 +88,7 @@ class MxMap extends \ManiaLive\Gui\Control {
     }
 
     protected function onResize($oldX, $oldY) {
-        $this->bg->setSize($this->sizeX, $this->sizeY);
+        //$this->bg->setSize($this->sizeX, $this->sizeY);
         $this->frame->setSize($this->sizeX, $this->sizeY);
         //  $this->button->setPosx($this->sizeX - $this->button->sizeX);
     }
