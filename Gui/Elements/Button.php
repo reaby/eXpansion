@@ -9,11 +9,10 @@ class Button extends \ManiaLive\Gui\Control
 	private $button;
                 
 	function __construct($sizeX=25, $sizeY=7)
-	{
-                
+	{                
                 $config = Config::getInstance();
 		$this->button= new \ManiaLib\Gui\Elements\Quad($sizeX, $sizeY);
-                $this->button->setAlign('center', 'center');
+                $this->button->setAlign('left', 'center');
                 $this->button->setImage($config->button);
                 $this->button->setImageFocus($config->buttonActive);
                 $this->button->setScriptEvents(true);                
@@ -26,16 +25,17 @@ class Button extends \ManiaLive\Gui\Control
 		$this->label->setFocusAreaColor2('000');
                 $this->label->setScriptEvents(true);
 		$this->addComponent($this->label);
-                
+                $this->sizeX = $sizeX;
+                $this->sizeY = $sizeY;
 		$this->setSize($sizeX, $sizeY);
 	}
 	
 	protected function onResize($oldX, $oldY)
 	{            
                 $this->button->setSize($this->sizeX, $this->sizeY);
-                $this->button->setPosition($this->sizeX / 2, $this->sizeY / 2);
+                
 		$this->label->setSize($this->sizeX, $this->sizeY);
-                $this->label->setPosition($this->sizeX / 2, $this->sizeY / 2);
+                $this->label->setPosX($this->sizeX/2);
 	}
 	
 	function onDraw()

@@ -24,11 +24,11 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
     }
     
     public function serverOptions($login) {
-          $info = ServerOptions::Create($login);
-          $info->setTitle('Server Options');
-          $info->centerOnScreen();
-          $info->setSize(160,100);
-          $info->show();            
+          $window = ServerOptions::Create($login);
+          $window->setTitle('Server Options');
+          $window->centerOnScreen();
+          $window->setSize(160,100);
+          $window->show();            
     }
 
 }
