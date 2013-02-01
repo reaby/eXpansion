@@ -11,14 +11,18 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
     public function onReady() {
         if ($this->isPluginLoaded('Standard\Menubar'))
             $this->buildMenu();
-        $this->enableDedicatedEvents();                       
+        $this->enableDedicatedEvents();
+        
     }
+
     public function onPlayerDisconnect($login) {
         Gui\Windows\Maplist::Erase($login);
     }
+
     public function buildMenu() {
         $this->callPublicMethod('Standard\Menubar', 'initMenu', \ManiaLib\Gui\Elements\Icons128x128_1::Challenge);
-        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Show Server Maps', array($this, 'showMapList'), false);
+        $this->callPublicMethod('Standard\Menubar', 'addButton', 'List all maps on server', array($this, 'showMapList'), false); 
+        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Add local map on server', array($this, 'addMaps'), true);
         $this->callPublicMethod('Standard\Menubar', 'addButton', 'Skip map', array($this, 'admSkip'), true);
         $this->callPublicMethod('Standard\Menubar', 'addButton', 'Replay map', array($this, 'admRestart'), true);
     }
@@ -37,8 +41,15 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
         $window->centerOnScreen();
         $window->setSize(120, 100);
         $window->show();
-   }
-
+    }
+    
+    public function addMaps($login) {
+        $window = Gui\Windows\addMaps::Create($login);
+        $window->setTitle('Add Maps on server');
+        $window->centerOnScreen();
+        $window->setSize(120, 100);
+        $window->show();
+    }
 }
 
 ?>
