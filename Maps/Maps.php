@@ -11,9 +11,7 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
     public function onReady() {
         if ($this->isPluginLoaded('Standard\Menubar'))
             $this->buildMenu();
-        $this->enableDedicatedEvents();
-        $this->showMapList('reaby');
-                
+        $this->enableDedicatedEvents();                       
     }
     public function onPlayerDisconnect($login) {
         Gui\Windows\Maplist::Erase($login);
@@ -37,7 +35,7 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
         $window = Gui\Windows\Maplist::Create($login);
         $window->setTitle('Maps on server');
         $window->centerOnScreen();
-        $window->setSize(160, 100);
+        $window->setSize(120, 100);
         $window->show();
    }
 
