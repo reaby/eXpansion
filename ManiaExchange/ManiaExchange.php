@@ -66,17 +66,17 @@ class ManiaExchange extends \ManiaLive\PluginHandler\Plugin {
             curl_close($ch);
             
             if ($data === false) {
-                $this->connection->chatSendServerMessage('MX is down', $login);
+                $this->connection->chatSendServerMessage('$f00$oError $z$s$fffMX is down', $login);
                 return;
             }
             
             if ($status["http_code"] !== 200) {
                     if ($status["http_code"] == 301)  {
-                    $this->connection->chatSendServerMessage('Map not found for id '. $mxId, $login);
+                    $this->connection->chatSendServerMessage('$f00$oError $z$s$fffMap not found for id '. $mxId, $login);
                     return;
                     }
                 
-                 $this->connection->chatSendServerMessage('$f00$bError $z$s$fff MX returned http error code:'. $status["http_code"], $login);
+                 $this->connection->chatSendServerMessage('$f00$oError $z$s$fffMX returned http error code:'. $status["http_code"], $login);
                  return;
             
             }

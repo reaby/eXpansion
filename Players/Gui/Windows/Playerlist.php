@@ -27,10 +27,10 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
     function kickPlayer($login, $target) {
         try {
-            $player = $this->storage->players[$target];
-            $admin = $this->storage->players[$login];
+            $player = $this->storage->getPlayerObject($target);
+            $admin = $this->storage->getPlayerObject($login);
             $this->connection->kick($target, "Please behave next time you visit the server!");
-            $this->connection->sendNotice($this->storage->players, $player->nickname . '$z were kicked from the server by admin.');
+            $this->connection->sendNotice($this->storage->players, $player->nickName . '$z were kicked from the server by admin.');
         } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff' . $e->getMessage());
         }       
@@ -38,10 +38,10 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
     function banPlayer($login, $target) {
         try {
-            $player = $this->storage->players[$target];
-            $admin = $this->storage->players[$login];
+            $player = $this->storage->getPlayerObject($target);
+            $admin = $this->storage->getPlayerObject($login);
             $this->connection->ban($target, "You are now banned from the server.");
-            $this->connection->sendNotice($this->storage->players, $player->nickname . '$z has been banned from the server.');
+            $this->connection->sendNotice($this->storage->players, $player->nickName . '$z has been banned from the server.');
         } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff$o' . $e->getMessage());
         }        

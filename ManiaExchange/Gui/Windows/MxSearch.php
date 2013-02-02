@@ -19,7 +19,7 @@ class MxSearch extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
     private $frame;
     private $header;
     public static $mxPlugin;
-    
+
     protected function onConstruct() {
         parent::onConstruct();
 
@@ -30,7 +30,7 @@ class MxSearch extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
         $this->frame = new \ManiaLive\Gui\Controls\Frame();
         $this->frame->setLayout(new \ManiaLib\Gui\Layouts\Column());
 
-        $this->header = new \ManiaLivePlugins\eXpansion\ManiaExchange\Gui\Controls\Header();       
+        $this->header = new \ManiaLivePlugins\eXpansion\ManiaExchange\Gui\Controls\Header();
         $this->frame->addComponent($this->header);
 
         $this->pager = new \ManiaLive\Gui\Controls\Pager();
@@ -59,29 +59,37 @@ class MxSearch extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
         $ch = curl_init($query);
         curl_setopt($ch, CURLOPT_USERAGENT, "Manialive/eXpansion MXapi [search] ver 0.1");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $json = curl_exec($ch);
-        if ($json === false) {
-            $this->connection->chatSendServerMessage("no tracks found or error while getting data from MX", $this->getRecipient());
-            return;
-        }
+        $data = curl_exec($ch);
+        $status = curl_getinfo($ch);
         curl_close($ch);
         
-        //print_r(json_decode($json, true));
+        if ($data === false) {
+            $this->connection->chatSendServerMessage('$f00$oError $z$s$fff MX is down', $login);
+            return;
+        }
+
+        if ($status["http_code"] !== 200) {
+            $this->connection->chatSendServerMessage('$f00$oError $z$s$fff MX returned http error code:' . $status["http_code"], $login);
+            return;
+        }
         
-        $this->maps = Map::fromArrayOfArray(json_decode($json, true));
+
+        //print_r(json_decode($json, true));
+
+        $this->maps = Map::fromArrayOfArray(json_decode($data, true));
 
         $this->pager->clearItems();
 
         $x = 0;
         $login = $this->getRecipient();
         foreach ($this->maps as $map) {
-            $item = new MxMap($x++, $map, $this, \ManiaLive\Features\Admin\AdminGroup::contains($login));            
+            $item = new MxMap($x++, $map, $this, \ManiaLive\Features\Admin\AdminGroup::contains($login));
             $this->pager->addItem($item);
         }
     }
 
     function addMap($login, $mapId) {
-        self::$mxPlugin->addMap($login, $mapId);        
+        self::$mxPlugin->addMap($login, $mapId);
     }
 
     function destroy() {
