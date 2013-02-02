@@ -65,7 +65,9 @@ class MxSearch extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             return;
         }
         curl_close($ch);
-
+        
+        //print_r(json_decode($json, true));
+        
         $this->maps = Map::fromArrayOfArray(json_decode($json, true));
 
         $this->pager->clearItems();

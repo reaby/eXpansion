@@ -61,12 +61,26 @@ class ManiaExchange extends \ManiaLive\PluginHandler\Plugin {
             $ch = curl_init($query);
             curl_setopt($ch, CURLOPT_USERAGENT, "Manialive/eXpansion MXapi [getter] ver 0.1");
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $data = curl_exec($ch);
+            $data = curl_exec($ch);           
+            $status = curl_getinfo($ch);
+            curl_close($ch);
+            
             if ($data === false) {
-                $this->connection->chatSendServerMessage("No track found or error while getting data from MX", $login);
+                $this->connection->chatSendServerMessage('MX is down', $login);
                 return;
             }
-            curl_close($ch);
+            
+            if ($status["http_code"] !== 200) {
+                    if ($status["http_code"] == 301)  {
+                    $this->connection->chatSendServerMessage('Map not found for id '. $mxId, $login);
+                    return;
+                    }
+                
+                 $this->connection->chatSendServerMessage('$f00$bError $z$s$fff MX returned http error code:'. $status["http_code"], $login);
+                 return;
+            
+            }
+            
             $file = $this->connection->getMapsDirectory() . "/Downloaded/" . $mxId . ".Map.Gbx";
 
             if (!touch($file)) {
