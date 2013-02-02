@@ -27,6 +27,7 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
     function kickPlayer($login, $target) {
         try {
+            $login = $this->getRecipient();
             $player = $this->storage->getPlayerObject($target);
             $admin = $this->storage->getPlayerObject($login);
             $this->connection->kick($target, "Please behave next time you visit the server!");
@@ -38,6 +39,7 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
     function banPlayer($login, $target) {
         try {
+            $login = $this->getRecipient();
             $player = $this->storage->getPlayerObject($target);
             $admin = $this->storage->getPlayerObject($login);
             $this->connection->ban($target, "You are now banned from the server.");
