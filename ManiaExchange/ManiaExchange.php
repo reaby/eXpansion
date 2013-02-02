@@ -11,7 +11,8 @@ class ManiaExchange extends \ManiaLive\PluginHandler\Plugin {
     public function onReady() {
         $this->registerChatCommand("mx", "chatMX", 2, true);
         $this->registerChatCommand("mx", "chatMX", 1, true);
-
+        Gui\Windows\MxSearch::$mxPlugin = $this;
+        
         if ($this->isPluginLoaded('Standard\Menubar'))
             $this->buildMenu();
         $this->enableDedicatedEvents();
@@ -29,7 +30,7 @@ class ManiaExchange extends \ManiaLive\PluginHandler\Plugin {
     public function chatMX($login, $arg, $param = null) {
         switch ($arg) {
             case "add":
-                $this->addTrack($login, $param);
+                $this->addMap($login, $param);
                 break;
             case "search":
                 $this->mxSearch($login, $param);
@@ -46,11 +47,11 @@ class ManiaExchange extends \ManiaLive\PluginHandler\Plugin {
         $window->setTitle('ManiaExchange');
         $window->search($search);
         $window->centerOnScreen();
-        $window->setSize(120, 100);
+        $window->setSize(140, 100);
         $window->show();
     }
 
-    public function addTrack($login, $mxId) {
+    public function addMap($login, $mxId) {
         if (!is_numeric($mxId)) {
             $this->connection->chatSendServerMessage('"' . $mxId . '" is not a numeric value.', $login);
             return;
