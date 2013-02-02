@@ -106,11 +106,13 @@ class Playeritem extends \ManiaLive\Gui\Control {
     protected function onResize($oldX, $oldY) {
         // $this->frame->setSize($this->sizeX, $this->sizeY);
         //  $this->button->setPosx($this->sizeX - $this->button->sizeX);
-        if ($this->player->forceSpectator == 2) {
-            $this->forceButton->setText("Force Spec");
-        } else {
-            $this->forceButton->setText("Release Spec");
-        }
+		if ($this->isAdmin) {
+			if ($this->player->forceSpectator == 2) {
+				$this->forceButton->setText("Force Spec");
+			} else {
+				$this->forceButton->setText("Release Spec");
+			}
+		}
     }
 
     function onDraw() {
