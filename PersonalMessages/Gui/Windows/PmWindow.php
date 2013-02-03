@@ -32,8 +32,8 @@ class PmWindow extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $this->hide();
             $targetPlayer = $this->storage->getPlayerObject($target);
             $sourcePlayer = $this->storage->getPlayerObject($login);
-            $this->connection->chatSendServerMessage('$7dfYou whisper to '.$targetPlayer->nickName.'$z$s$7df: '. $this->message , $login);
-            $this->connection->chatSendServerMessage($sourcePlayer->nickName. '$z$s$7df whispers to you: '. $this->message, $target);
+            $this->connection->chatSendServerMessage('$abcYou whisper to '.($targetPlayer->nickName).'$z$s$abc: '. $this->message , $login);
+            $this->connection->chatSendServerMessage('$abcA whisper from '.($sourcePlayer->nickName).'$z$s$abc: '. $this->message, $target);
             } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff' . $e->getMessage());
         }       
