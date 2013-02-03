@@ -34,6 +34,7 @@
 
 namespace ManiaLivePlugins\eXpansion\Chat;
 
+use ManiaLive\Utilities\Console;
 use ManiaLive\Features\Admin\AdminGroup;
 use ManiaLivePlugins\eXpansion\Chat\Config;
 
