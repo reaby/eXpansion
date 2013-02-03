@@ -20,9 +20,9 @@ class Players extends \ManiaLive\PluginHandler\Plugin {
 
     public function showPlayerList($login) {
         $window = Gui\Windows\Playerlist::Create($login);
-        $window->setTitle('Players');
-        $window->centerOnScreen();
-        $window->setSize(120, 100);
+        $window->setTitle('Players');    
+        $window->setSize(120, 100);    
+        $window->centerOnScreen();        
         $window->show();
    }
 
