@@ -28,8 +28,8 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
     function onPlayerConnect($login, $isSpectator) {
         if (\ManiaLive\Features\Admin\AdminGroup::contains($login)) {
             $info = AdminPanel::Create($login);
-            $info->setSize(60, 20);
-            $info->setPosition(-160, -60);            
+            $info->setSize(50, 20);
+            $info->setPosition(-160, -50);            
             $info->show();
         }
     }
