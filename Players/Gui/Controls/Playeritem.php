@@ -107,7 +107,7 @@ class Playeritem extends \ManiaLive\Gui\Control {
         // $this->frame->setSize($this->sizeX, $this->sizeY);
         //  $this->button->setPosx($this->sizeX - $this->button->sizeX);
 		if ($this->isAdmin) {
-			if ($this->player->forceSpectator == 2) {
+			if ($this->player->forceSpectator == 0 || $this->player->forceSpectator == 2) {
 				$this->forceButton->setText("Force Spec");
 			} else {
 				$this->forceButton->setText("Release Spec");

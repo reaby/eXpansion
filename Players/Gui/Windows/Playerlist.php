@@ -13,8 +13,8 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
     private $pager;
     private $connection;
-    private $storage;   
-    
+    private $storage;
+
     protected function onConstruct() {
         parent::onConstruct();
         $config = \ManiaLive\DedicatedApi\Config::getInstance();
@@ -34,7 +34,7 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $this->connection->sendNotice($this->storage->players, $player->nickName . '$z were kicked from the server by admin.');
         } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff' . $e->getMessage());
-        }       
+        }
     }
 
     function banPlayer($login, $target) {
@@ -46,26 +46,27 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $this->connection->sendNotice($this->storage->players, $player->nickName . '$z has been banned from the server.');
         } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff$o' . $e->getMessage());
-        }        
+        }
     }
 
     function toggleSpec($login, $target) {
         try {
             $player = $this->storage->getPlayerObject($target);
-            if ($player->forceSpectator == 2) {
+
+            if ($player->forceSpectator == 2 || $player->forceSpectator == 0) {
                 $this->connection->forceSpectator($target, 1);
                 $this->connection->sendNotice($target, '$f00Admin has forced you to specate!');
             }
-            
+
             if ($player->forceSpectator == 1) {
                 $this->connection->forceSpectator($target, 2);
+                $this->connection->forceSpectator($target, 0);
                 $this->connection->sendNotice($target, "Admin has released you from specate to play.");
-            }     
-            
+            }
         } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff$o' . $e->getMessage());
         }
-        $this->RedrawAll();     
+        $this->RedrawAll();
     }
 
     function onResize($oldX, $oldY) {

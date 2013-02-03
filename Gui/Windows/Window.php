@@ -18,15 +18,15 @@ class Window extends \ManiaLive\Gui\Window {
     protected function onConstruct() {
         parent::onConstruct();
         $config = Config::getInstance();
-        $this->setId("theWindow");
-        $this->setScale(0);
+        // $this->setId("theWindow");
+        // $this->setScale(0);
         $this->_windowFrame = new \ManiaLive\Gui\Controls\Frame($this->sizeX, $this->sizeY);
         $this->_windowFrame->setScriptEvents(true);
         $this->_windowFrame->setId("Window");
-
+        $this->_windowFrame->setAlign("center");
 
         $this->_mainWindow = new \ManiaLib\Gui\Elements\Quad($this->sizeX, $this->sizeY);
-        $this->_mainWindow->setId("MainWindow");
+        $this->_mainWindow->setId("MainWindow");        
         // $this->mainWindow->setScriptEvents(true);
         $this->_mainWindow->setStyle("Bgs1InRace");
         $this->_mainWindow->setSubStyle("BgWindow2");
