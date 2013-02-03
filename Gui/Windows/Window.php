@@ -22,8 +22,9 @@ class Window extends \ManiaLive\Gui\Window {
         // $this->setScale(0);
         $this->_windowFrame = new \ManiaLive\Gui\Controls\Frame($this->sizeX, $this->sizeY);
         $this->_windowFrame->setScriptEvents(true);
-        $this->_windowFrame->setId("Window");
-        $this->_windowFrame->setAlign("center");
+       // $this->_windowFrame->setId("Window");
+        $this->_windowFrame->setAlign("center", "top");
+        
 
         $this->_mainWindow = new \ManiaLib\Gui\Elements\Quad($this->sizeX, $this->sizeY);
         $this->_mainWindow->setId("MainWindow");        

@@ -9,10 +9,15 @@ class Players extends \ManiaLive\PluginHandler\Plugin {
     }
 
     public function onReady() {
+        $this->enableDedicatedEvents();
+        
         if ($this->isPluginLoaded('Standard\Menubar'))
             $this->buildMenu();    
     }
     
+    public function onPlayerDisconnect($login) {
+        Gui\Windows\Playerlist::Erase($login);
+    }
     public function buildMenu() {
         $this->callPublicMethod('Standard\Menubar', 'initMenu', \ManiaLib\Gui\Elements\Icons64x64_1::Buddy);
         $this->callPublicMethod('Standard\Menubar', 'addButton', 'Players', array($this, 'showPlayerList'), false);        

@@ -65,8 +65,7 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             }
         } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff$o' . $e->getMessage());
-        }
-        $this->RedrawAll();
+        }       
     }
 
     function onResize($oldX, $oldY) {
