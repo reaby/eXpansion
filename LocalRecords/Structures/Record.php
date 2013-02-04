@@ -8,9 +8,10 @@ class Record extends \DedicatedApi\Structures\AbstractStructure {
     public $place = -1;
      
      
-    public function __construct($login, $time) {
+    public function __construct($login, $time, $place = -1) {
         $this->login = $login;
         $this->time = $time;
+        $this->place = $place;
     }
     
 }

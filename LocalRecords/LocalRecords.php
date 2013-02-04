@@ -18,7 +18,8 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
         $this->enableDatabase();
         $this->enableDedicatedEvents();
         $this->enablePluginEvents();
-        $this->registerChatCommand("test", "saveRecords", 0, true, \ManiaLive\Features\Admin\AdminGroup::get());
+        $this->registerChatCommand("save", "saveRecords", 0, true, \ManiaLive\Features\Admin\AdminGroup::get());
+        $this->registerChatCommand("load", "loadRecords", 0, true, \ManiaLive\Features\Admin\AdminGroup::get());
 
         if (!$this->db->tableExists("exp_players")) {
             $this->db->execute('CREATE TABLE IF NOT EXISTS `exp_players` (  
@@ -51,20 +52,36 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
             $this->onPlayerConnect($player->login, true);
 
         $this->syncPlayers();
+        $this->loadRecords($this->storage->currentMap->uId);
+        $this->reArrage();
+
         // $this->readRecords($this->storage->currentMap->uId);
     }
 
-    public function saveRecords($login) {
-        $data = Array();
-        $data['uid'] = $this->storage->currentMap->uId;
-        $data['mapname'] = $this->storage->currentMap->name;
-        $data['mapauthor'] = $this->storage->currentMap->author;
-        $data['records'] = json_encode($this->records);
-
-        print_r($data);
+    public function saveRecords() {
+        $uid = $this->db->quote($this->storage->currentMap->uId);
+        $mapname = $this->db->quote($this->storage->currentMap->name);
+        $author = $this->db->quote($this->storage->currentMap->author);
+        $json = $this->db->quote(json_encode($this->records));
+        $query = "INSERT INTO exp_records (`uid`, `mapname`, `mapauthor`, `records` ) VALUES (" . $uid . "," . $mapname . "," . $author . "," . $json . ") ON DUPLICATE KEY UPDATE `records`=" . $json . ";";
+        $this->db->execute($query);
     }
 
-    function reArrage() {
+    public function loadRecords($uid) {
+        $json = $this->db->query("SELECT `records` from exp_records where `uid`=" . $this->db->quote($uid) . ";")->fetchArray();
+        $records = json_decode($json['records']);
+        $outRecords = array();
+        if (count($records) == 0) {
+            $this->records = array();
+            return;
+        }
+        foreach ($records as $login => $record)
+            $outRecords[$login] = new Structures\Record($login, $record->time, $record->place);
+
+        $this->records = $outRecords;
+    }
+
+    function reArrage($save = false) {
         \ManiaLivePlugins\eXpansion\Helpers\ArrayOfObj::sortAsc($this->records, "time");
         $i = 0;
         $newrecords = array();
@@ -76,59 +93,57 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
         }
         $this->records = array_slice($newrecords, 0, 20);
         $this->lastRecord = end($this->records);
-        
+
+        if ($save)
+            $this->saveRecords();
+
         LRPanel::$records = $this->records;
         LRPanel::EraseAll();
-        
-        
+
+
         $info = LRPanel::Create();
-        
         $info->setSize(50, 20);
         $info->setPosition(-160, -0);
         $info->show();
-
-        print_r($this->records);
     }
 
-    function onPlayerCheckpoint($playerUid, $login, $time, $curLap, $checkpointIndex) {
-        $x = 0;
-        if ($checkpointIndex != 0)
+    function onBeginMap($map, $warmUp, $matchContinuation) {
+        $this->loadRecords($this->storage->currentMap->uId);
+        $this->reArrage();
+    }
+
+    function onEndMap($rankings, $map, $wasWarmUp, $matchContinuesOnNextMap, $restartMap) {
+        $this->saveRecords();
+    }
+
+    function onPlayerFinish($playerUid, $login, $time) {
+        if ($time == 0)
             return;
 
-        if (!array_key_exists($login, $this->records)) {
-            
-        }
 
+        $x = 0;  
+        
         if (count($this->records) == 0) {
             $this->records[$login] = new Structures\Record($login, $time);
-            $this->reArrage();
-         //   $this->connection->chatSendServerMessage($login . " took " . $this->records[$login]->place . " place with time:" . \ManiaLive\Utilities\Time::fromTM($time));
+            $this->reArrage(true);
+            //   $this->connection->chatSendServerMessage($login . " took " . $this->records[$login]->place . " place with time:" . \ManiaLive\Utilities\Time::fromTM($time));
             return;
         }
 
         if ($this->lastRecord->time > $time || count($this->records) < 20) {
             $this->records[$login] = new Structures\Record($login, $time);
-            $this->reArrage();
-          //  $this->connection->chatSendServerMessage($login . " gained " . $this->records[$login]->place . " with time:" . \ManiaLive\Utilities\Time::fromTM($time));
-            return;
-        }
-
-        if ($this->records[$login]->time < $time) {
-            print "$login had bad time\n";
+            $this->reArrage(true);
+            //  $this->connection->chatSendServerMessage($login . " gained " . $this->records[$login]->place . " with time:" . \ManiaLive\Utilities\Time::fromTM($time));
             return;
         }
 
         if ($this->records[$login]->time > $time) {
             $oldRecord = $this->records[$login];
             $this->records[$login] = new Structures\Record($login, $time);
-            $this->reArrage();
-          //  $this->connection->chatSendServerMessage($login . " took " . $this->records[$login]->place . " place with time:" . \ManiaLive\Utilities\Time::fromTM($time));
+            $this->reArrage(true);
+            //  $this->connection->chatSendServerMessage($login . " took " . $this->records[$login]->place . " place with time:" . \ManiaLive\Utilities\Time::fromTM($time));
             return;
         }
-    }
-
-    function onPlayerFinish($playerUid, $login, $timeOrScore) {
-        
     }
 
     function syncPlayers() {
