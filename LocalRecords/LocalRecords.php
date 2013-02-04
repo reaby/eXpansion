@@ -31,7 +31,7 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
 
         if (!$this->db->tableExists("exp_records")) {
             $this->db->execute('CREATE TABLE IF NOT EXISTS `exp_records` (
-  `uid` int(11) NOT NULL,
+  `uid` varchar(50) NOT NULL,
   `mapname` text NOT NULL,
   `mapauthor` text NOT NULL,
   `records` text NOT NULL,
