@@ -34,18 +34,29 @@ class LRPanel extends \ManiaLive\Gui\Window {
         $this->_mainWindow->setId("myWindow");
         $this->_mainWindow->setStyle("BgsPlayerCard");
         $this->_mainWindow->setSubStyle("BgPlayerCardBig");
-        $this->_mainWindow->setAlign("left", "top");     
+        $this->_mainWindow->setAlign("left", "top");
         $this->_mainWindow->setScriptEvents(true);
         $this->_windowFrame->addComponent($this->_mainWindow);
 
         $frame = new \ManiaLive\Gui\Controls\Frame();
         $frame->setAlign("left", "top");
-        $frame->setPosition(6,-4);
+        $frame->setPosition(3, -4);
         $frame->setLayout(new \ManiaLib\Gui\Layouts\Column(-1));
+        
         $index = 1;
-        foreach (self::$records as $record)
-            $frame->addComponent(new recordItem($index++, $record));
+        $timeDiff = 0;
+        $first = 0;
 
+        foreach (self::$records as $record) {
+            if ($index == 1) {
+                $first = $record->time;
+                $timeDiff = 0;
+            } else {
+                $timeDiff = $record->time - $first;
+            }
+            
+            $frame->addComponent(new recordItem($index++, $record, $timeDiff));
+        }
         $this->_windowFrame->addComponent($frame);
 
         $this->_minButton = new \ManiaLib\Gui\Elements\Quad(5, 5);

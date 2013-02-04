@@ -13,7 +13,7 @@ class Recorditem extends \ManiaLive\Gui\Control {
     private $time;
     private $frame;
 
-    function __construct($index, \ManiaLivePlugins\eXpansion\LocalRecords\Structures\Record $record) {
+    function __construct($index, \ManiaLivePlugins\eXpansion\LocalRecords\Structures\Record $record, $diffTime) {
         $sizeX = 30;
         $sizeY = 3;
 
@@ -26,18 +26,20 @@ class Recorditem extends \ManiaLive\Gui\Control {
         $this->label = new \ManiaLib\Gui\Elements\Label(4, 4);
         $this->label->setAlign('left', 'center');
         $this->label->setScale(0.7);
-        $this->label->setText('$fff' . $index . ".");
+        $bold = "";
+        if ($index <= 3) $bold = '$o';
+        $this->label->setText('$fff' . $bold. $index);
         $this->frame->addComponent($this->label);
 
         $spacer = new \ManiaLib\Gui\Elements\Quad();
         $spacer->setSize(1, 4);
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
-        $this->frame->addComponent($spacer);
+       // $this->frame->addComponent($spacer);
 
-        $this->label = new \ManiaLib\Gui\Elements\Label(16, 4);
+        $this->label = new \ManiaLib\Gui\Elements\Label(14, 4);
         $this->label->setAlign('left', 'center');
         $this->label->setScale(0.7);
-        $this->label->setText('$fff' . \ManiaLive\Utilities\Time::fromTM($record->time));
+        $this->label->setText('$fff' . \ManiaLive\Utilities\Time::fromTM($record->time));        
         $this->frame->addComponent($this->label);
 
         $spacer = new \ManiaLib\Gui\Elements\Quad();
@@ -45,7 +47,7 @@ class Recorditem extends \ManiaLive\Gui\Control {
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
         $this->frame->addComponent($spacer);
 
-        $this->nick = new \ManiaLib\Gui\Elements\Label(40, 4);
+        $this->nick = new \ManiaLib\Gui\Elements\Label(34, 4);
         $this->nick->setAlign('left', 'center');
         $this->nick->setScale(0.7);
         $nickname = LocalRecords::$players[$record->login]->nickname;
@@ -54,7 +56,18 @@ class Recorditem extends \ManiaLive\Gui\Control {
         $this->nick->setText('$fff' . $nickname );
         $this->frame->addComponent($this->nick);
 
-
+        $this->label = new \ManiaLib\Gui\Elements\Label(15, 4);
+        $this->label->setAlign('left', 'center');
+        $this->label->setScale(0.7);
+        if ($diffTime == 0)  {
+          $this->label->setText('$0f0+' . \ManiaLive\Utilities\Time::fromTM($diffTime));
+        }
+        else {
+           $this->label->setText('$ff0' . \ManiaLive\Utilities\Time::fromTM($diffTime, true));
+        
+        }
+        $this->frame->addComponent($this->label);
+        
 
         $this->addComponent($this->frame);
 
