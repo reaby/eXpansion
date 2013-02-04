@@ -39,11 +39,7 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
         }
-
-        $player = new Structures\DbPLayer();
-        $player->fromPlayerObj($this->storage->getPlayerObject('reaby'));
-        $this->db->execute($player->exportToDb());
-        // echo $this->db->affectedRows();     
+        
     }
 
     public function onReady() {

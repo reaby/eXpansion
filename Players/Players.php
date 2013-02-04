@@ -24,6 +24,7 @@ class Players extends \ManiaLive\PluginHandler\Plugin {
     }
 
     public function showPlayerList($login) {
+        \ManiaLivePlugins\eXpansion\Players\Gui\Windows\Playerlist::Erase($login);
         $window = \ManiaLivePlugins\eXpansion\Players\Gui\Windows\Playerlist::Create($login);
         $window->setTitle('Players');    
         $window->setSize(120, 100);    

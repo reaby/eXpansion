@@ -21,6 +21,7 @@ class EmotePanel extends \ManiaLive\Gui\Window {
     private $actionBG;
     private $actionLOL;
     private $actionAfk;
+    public static $emotePlugin;
     
 
     protected function onConstruct() {
@@ -80,13 +81,10 @@ class EmotePanel extends \ManiaLive\Gui\Window {
         $this->_windowFrame->addComponent($frame);
         
         $this->_minButton = new \ManiaLib\Gui\Elements\Quad(5, 5);
-        $this->_minButton->setId("minimizeButton");
-        //$this->_minButton->setStyle("Icons128x128_1");
-        //$this->_minButton->setSubStyle("ProfileAdvanced");
-        $this->_minButton->setImage($config->iconMenu);
         $this->_minButton->setScriptEvents(true);
+        $this->_minButton->setId("minimizeButton");        
+        $this->_minButton->setImage($config->iconMenu);       
         $this->_minButton->setAlign("left", "bottom");
-
         $this->_windowFrame->addComponent($this->_minButton);
 
         $this->addComponent($this->_windowFrame);
@@ -103,7 +101,7 @@ class EmotePanel extends \ManiaLive\Gui\Window {
                         mainWindow.PosnX = -50.0;
 
                         while(True) {
-                                if (isMinimized && mainWindow.PosnX <= 0) {                                        
+                                if (isMinimized && mainWindow.PosnX <= -4) {                                        
                                         mainWindow.PosnX += 4; 
                                         
                                 } 
@@ -113,8 +111,8 @@ class EmotePanel extends \ManiaLive\Gui\Window {
                                 }                          
                                 
                                 foreach (Event in PendingEvents) {                                                
-                                    if (Event.Type == CMlEvent::Type::MouseClick && Event.ControlId == "minimizeButton") {
-                                           isMinimized = !isMinimized;                                          
+                                    if ( Event.Type == CMlEvent::Type::MouseClick && Event.ControlId == "minimizeButton") {
+                                    isMinimized = !isMinimized;                                          
                                     }                                       
                                 }
                                 yield;                        
@@ -135,29 +133,7 @@ class EmotePanel extends \ManiaLive\Gui\Window {
     }
 
     function actions($login, $action) {
-        try {
-            $player = $this->storage->getPlayerObject($login);
-            switch ($action) {
-                case "GG": 
-                    $this->connection->chatSendServerMessage($player->nickName.'$z$s$i$o$f90 Good Game, everybody!');
-                    break;                                
-                case "BG": 
-                    $this->connection->chatSendServerMessage($player->nickName.'$z$s$i$o$f90 I had a bad game :(');
-                    break;
-                
-                case "Afk": 
-                    $this->connection->chatSendServerMessage($player->nickName.'$z$s$i$o$f90 is away from the keyboard!');
-                    break;
-                
-                 case "Lol": 
-                    $this->connection->chatSendServerMessage($player->nickName.'  $z$s$i$fff is laughing out loud: $o$FF0L$FE1o$FD1o$FB2o$FA2o$F93o$F93o$F72o$F52o$F41o$F21o$F00L');
-                    break;
-                
-                
-            }            
-        } catch (\Exception $e) {
-            $this->connection->chatSendServerMessage('$f00$bError! $z$s$fff'.$e->getMessage(),$login);
-        }
+      self::$emotePlugin->sendEmote($login, $action);
     }
 
     function onShow() {

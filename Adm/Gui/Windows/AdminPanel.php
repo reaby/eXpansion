@@ -107,7 +107,7 @@ class AdminPanel extends \ManiaLive\Gui\Window {
                         UI.OverlayHideNotices = False;
                         
                         while(True) {
-                                if (isMinimized && mainWindow.PosnX <= 0) {                                        
+                                if (isMinimized && mainWindow.PosnX <= -4) {                                        
                                         mainWindow.PosnX += 4; 
                                         
                                 } 
