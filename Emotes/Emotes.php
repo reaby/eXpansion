@@ -22,7 +22,7 @@ class Emotes extends \ManiaLive\PluginHandler\Plugin {
     function onPlayerConnect($login, $isSpectator) {
         $info = EmotePanel::Create($login);
         $info->setSize(60, 20);
-        $info->setPosition(-160, -60);
+        $info->setPosition(-160, -52);
         $info->show();
     }
 

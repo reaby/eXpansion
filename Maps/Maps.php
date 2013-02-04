@@ -24,16 +24,31 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
         $this->callPublicMethod('Standard\Menubar', 'initMenu', \ManiaLib\Gui\Elements\Icons128x128_1::Challenge);
         $this->callPublicMethod('Standard\Menubar', 'addButton', 'List all maps on server', array($this, 'showMapList'), false); 
         $this->callPublicMethod('Standard\Menubar', 'addButton', 'Add local map on server', array($this, 'addMaps'), true);
-        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Skip map', array($this, 'admSkip'), true);
-        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Replay map', array($this, 'admRestart'), true);
+        
+        // user call votes disabled since dedicated doesn't support them atm.
+        //  $this->callPublicMethod('Standard\Menubar', 'addButton', 'Vote for skip map', array($this, 'voteSkip'), false);
+        //  $this->callPublicMethod('Standard\Menubar', 'addButton', 'Vote for replay map', array($this, 'voteRestart'), false);
     }
 
-    public function admRestart() {
-        $this->connection->restartMap();
+    public function voteRestart($login) {
+        $vote = new \DedicatedApi\Structures\Vote();
+        $vote->callerLogin = $login;
+        $vote->cmdName = "Cmd name";
+        $vote->cmdParam = array("param");
+        $this->connection->callVote($vote, 0.5, 0, 0);
+        $this->connection->chatSendServerMessage($login." custom vote restart");
     }
 
-    public function admSkip() {
-        $this->connection->nextMap();
+    
+    public function onVoteUpdated($stateName, $login, $cmdName, $cmdParam) {
+         $message = $stateName . " -> ". $login . " -> ".$cmdName . " -> ".  $cmdParam . "\n";
+         $this->connection->chatSendServerMessage($message);        
+    }
+    
+    
+    public function voteSkip($login) {
+        $this->connection->callVoteNextMap();
+        $this->connection->chatSendServerMessage($login." vote skip");
     }
 
     public function showMapList($login) {
@@ -54,3 +69,4 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
 }
 
 ?>
+

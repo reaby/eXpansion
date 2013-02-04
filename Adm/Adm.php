@@ -29,7 +29,7 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
         if (\ManiaLive\Features\Admin\AdminGroup::contains($login)) {
             $info = AdminPanel::Create($login);
             $info->setSize(50, 20);
-            $info->setPosition(-160, -50);            
+            $info->setPosition(-160, -46);            
             $info->show();
         }
     }
