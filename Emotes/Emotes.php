@@ -20,6 +20,7 @@ class Emotes extends \ManiaLive\PluginHandler\Plugin {
         $this->registerChatCommand("bg", "BG", 0, true);
         $this->registerChatCommand("lol", "Lol", 0, true);
         $this->registerChatCommand("afk", "Afk", 0, true);
+         $this->registerChatCommand("bootme", "BootMe", 0, true);
 
         foreach ($this->storage->players as $player)
             $this->onPlayerConnect($player->login, false);
@@ -55,7 +56,12 @@ class Emotes extends \ManiaLive\PluginHandler\Plugin {
     public function Afk($login) {
         $this->sendEmote($login, __FUNCTION__);
     }
-
+    
+    public function BootMe($login) {
+        $this->sendEmote($login, __FUNCTION__);
+        $this->connection->kick($login);
+    }
+    
     public function sendEmote($login, $action) {
         try {
             if (!isset($this->timeStamps[$login])) {
@@ -70,6 +76,9 @@ class Emotes extends \ManiaLive\PluginHandler\Plugin {
             switch ($action) {
                 case "GG":
                     $this->connection->chatSendServerMessage($player->nickName . '$z$s$i$o$f90 Good Game, everybody!');
+                    break;
+                 case "BootMe":
+                    $this->connection->chatSendServerMessage($player->nickName . '$z$s$i$o$f90 Chooses the real life! Cya..');
                     break;
                 case "BG":
                     $this->connection->chatSendServerMessage($player->nickName . '$z$s$i$o$f90 I had a bad game :(');

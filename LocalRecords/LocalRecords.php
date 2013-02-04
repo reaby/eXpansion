@@ -27,7 +27,7 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
   `login` varchar(255) NOT NULL,
   `nickname` text NOT NULL,
   PRIMARY KEY (`login`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;');
         }
 
         if (!$this->db->tableExists("exp_records")) {
@@ -37,7 +37,7 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
   `mapauthor` text NOT NULL,
   `records` text NOT NULL,
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;');
         }
         
     }

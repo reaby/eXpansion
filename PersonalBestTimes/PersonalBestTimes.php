@@ -27,7 +27,7 @@ class PersonalBestTimes extends \ManiaLive\PluginHandler\Plugin {
   `login` varchar(255) NOT NULL,
   `time` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;');
         }
     }
 
