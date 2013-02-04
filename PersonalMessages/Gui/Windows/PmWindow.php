@@ -6,9 +6,11 @@ use \ManiaLivePlugins\eXpansion\Gui\Elements\Button as OkButton;
 use \ManiaLivePlugins\eXpansion\Gui\Elements\Inputbox;
 use \ManiaLivePlugins\eXpansion\Gui\Elements\Checkbox;
 use \ManiaLivePlugins\eXpansion\Gui\Elements\Ratiobutton;
-use ManiaLivePlugins\eXpansion\PersonalMessages\Gui\Controls\Playeritem;
 use ManiaLive\Gui\ActionHandler;
 use ManiaLib\Utils\Formatting;
+
+use ManiaLivePlugins\eXpansion\PersonalMessages\Gui\Controls\Playeritem;
+use ManiaLivePlugins\eXpansion\PersonalMessages\PersonalMessages;
 
 class PmWindow extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
@@ -32,6 +34,7 @@ class PmWindow extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $this->hide();
             $targetPlayer = $this->storage->getPlayerObject($target);
             $sourcePlayer = $this->storage->getPlayerObject($login);
+            PersonalMessages::$reply[$login] = $target;
             $this->connection->chatSendServerMessage('$abcYou whisper to '.($targetPlayer->nickName).'$z$s$abc: '. $this->message , $login);
             $this->connection->chatSendServerMessage('$abcA whisper from '.($sourcePlayer->nickName).'$z$s$abc: '. $this->message, $target);
             } catch (\Exception $e) {

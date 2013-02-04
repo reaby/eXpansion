@@ -81,7 +81,7 @@ class LRPanel extends \ManiaLive\Gui\Window {
                                 }                          
                                 
                                 foreach (Event in PendingEvents) {                                                
-                                    if (Event.Type == CMlEvent::Type::MouseClick && Event.ControlId == "myWindow") {
+                                    if (Event.Type == CMlEvent::Type::MouseClick && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
                                            isMinimized = !isMinimized;                                          
                                     }                                       
                                 }
