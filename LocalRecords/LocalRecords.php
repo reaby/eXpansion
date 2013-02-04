@@ -20,6 +20,7 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
         $this->enablePluginEvents();
         $this->registerChatCommand("save", "saveRecords", 0, true, \ManiaLive\Features\Admin\AdminGroup::get());
         $this->registerChatCommand("load", "loadRecords", 0, true, \ManiaLive\Features\Admin\AdminGroup::get());
+        $this->registerChatCommand("reset", "resetRecords", 0, true, \ManiaLive\Features\Admin\AdminGroup::get());
 
         if (!$this->db->tableExists("exp_players")) {
             $this->db->execute('CREATE TABLE IF NOT EXISTS `exp_players` (  
@@ -57,7 +58,11 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
 
         // $this->readRecords($this->storage->currentMap->uId);
     }
-
+    public function resetRecords() {
+        $this->records = array();
+        $this->reArrage();                        
+        
+    }
     public function saveRecords() {
         $uid = $this->db->quote($this->storage->currentMap->uId);
         $mapname = $this->db->quote($this->storage->currentMap->name);
@@ -161,11 +166,11 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
             
             // todo: possible add different message if player enhances own record... 
             if ($oldRecord !== null) {
-                $this->connection->chatSendServerMessage($color . 'a new local record ' . $actionColor . \ManiaLib\Utils\Formatting::stripStyles($player->nickName) . '$z$s' . $color . " took " . $actionColor . '$o' . $this->records[$login]->place . $color . '$o place with time $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time));
+                $this->connection->chatSendServerMessage($color . 'a new local record ' . $actionColor . \ManiaLib\Utils\Formatting::stripCodes($player->nickName, "wos") . '$z$s' . $color . " took " . $actionColor . '$o' . $this->records[$login]->place . $color . '$o place with time $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time));
                 return;
             }
 
-            $this->connection->chatSendServerMessage($color . 'a new local record ' . $actionColor . \ManiaLib\Utils\Formatting::stripStyles($player->nickName) . '$z$s' . $color . " took " . $actionColor . '$o' . $this->records[$login]->place . $color . '$o place with time $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time));
+            $this->connection->chatSendServerMessage($color . 'a new local record ' . $actionColor . \ManiaLib\Utils\Formatting::stripCodes($player->nickName, "wos") . '$z$s' . $color . " took " . $actionColor . '$o' . $this->records[$login]->place . $color . '$o place with time $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time));
         } catch (\Exception $e) {
             \ManiaLive\Utilities\Console::println("Error: couldn't show localrecords message" . $e->getMessage());
         }
