@@ -102,8 +102,8 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
 
 
         $info = LRPanel::Create();
-        $info->setSize(50, 20);
-        $info->setPosition(-160, -0);
+        $info->setSize(50, 60);
+        $info->setPosition(-160, 30);
         $info->show();
     }
 
@@ -120,29 +120,54 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
         if ($time == 0)
             return;
 
+        $x = 0;
 
-        $x = 0;  
-        
+        // if no records, make entry
         if (count($this->records) == 0) {
             $this->records[$login] = new Structures\Record($login, $time);
             $this->reArrage(true);
-            //   $this->connection->chatSendServerMessage($login . " took " . $this->records[$login]->place . " place with time:" . \ManiaLive\Utilities\Time::fromTM($time));
-            return;
+            $this->announce($login);
         }
 
+        // so if the time is better than the last entry or the count of records is less than 20...
         if ($this->lastRecord->time > $time || count($this->records) < 20) {
-            $this->records[$login] = new Structures\Record($login, $time);
-            $this->reArrage(true);
-            //  $this->connection->chatSendServerMessage($login . " gained " . $this->records[$login]->place . " with time:" . \ManiaLive\Utilities\Time::fromTM($time));
-            return;
+            // if player exists on the list... see if he got better time
+            if (array_key_exists($login, $this->records)) {
+                if ($this->records[$login]->time > $time) {
+                    $oldRecord = $this->records[$login];
+                    $this->records[$login] = new Structures\Record($login, $time);
+                    $this->reArrage(true);
+                    $this->announce($login, $oldRecord);
+                    return;
+                }
+                // if not then just do a update for the time
+            } else {
+                $this->records[$login] = new Structures\Record($login, $time);
+                $this->reArrage(true);
+                $this->announce($login);
+                return;
+            }
         }
+    }
 
-        if ($this->records[$login]->time > $time) {
-            $oldRecord = $this->records[$login];
-            $this->records[$login] = new Structures\Record($login, $time);
-            $this->reArrage(true);
-            //  $this->connection->chatSendServerMessage($login . " took " . $this->records[$login]->place . " place with time:" . \ManiaLive\Utilities\Time::fromTM($time));
-            return;
+    function announce($login, $oldRecord = null) {
+        try {
+            $player = $this->storage->getPlayerObject($login);
+            $color = '$fff';
+            $actionColor = '$6ad';
+
+            if ($this->records[$login]->place == 1)
+                $actionColor = '$39f';
+            
+            // todo: possible add different message if player enhances own record... 
+            if ($oldRecord !== null) {
+                $this->connection->chatSendServerMessage($color . 'a new local record ' . $actionColor . \ManiaLib\Utils\Formatting::stripStyles($player->nickName) . '$z$s' . $color . " took " . $actionColor . '$o' . $this->records[$login]->place . $color . '$o place with time $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time));
+                return;
+            }
+
+            $this->connection->chatSendServerMessage($color . 'a new local record ' . $actionColor . \ManiaLib\Utils\Formatting::stripStyles($player->nickName) . '$z$s' . $color . " took " . $actionColor . '$o' . $this->records[$login]->place . $color . '$o place with time $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time));
+        } catch (\Exception $e) {
+            \ManiaLive\Utilities\Console::println("Error: couldn't show localrecords message" . $e->getMessage());
         }
     }
 
@@ -159,10 +184,10 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
         self::$players[$login] = $player;
     }
 
-    public function onPlayerDisconnect($login) {
+    public
+            function onPlayerDisconnect($login) {
         
     }
 
 }
-
 ?>

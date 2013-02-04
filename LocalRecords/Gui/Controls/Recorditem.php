@@ -14,8 +14,8 @@ class Recorditem extends \ManiaLive\Gui\Control {
     private $frame;
 
     function __construct($index, \ManiaLivePlugins\eXpansion\LocalRecords\Structures\Record $record) {
-        $sizeX = 50;
-        $sizeY = 4;
+        $sizeX = 30;
+        $sizeY = 3;
 
         $this->frame = new \ManiaLive\Gui\Controls\Frame();
         $this->frame->setSize($sizeX, $sizeY);
@@ -23,14 +23,14 @@ class Recorditem extends \ManiaLive\Gui\Control {
 
 
 
-        $this->label = new \ManiaLib\Gui\Elements\Label(6, 4);
+        $this->label = new \ManiaLib\Gui\Elements\Label(4, 4);
         $this->label->setAlign('left', 'center');
         $this->label->setScale(0.7);
         $this->label->setText('$fff' . $index . ".");
         $this->frame->addComponent($this->label);
 
         $spacer = new \ManiaLib\Gui\Elements\Quad();
-        $spacer->setSize(2, 4);
+        $spacer->setSize(1, 4);
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
         $this->frame->addComponent($spacer);
 
@@ -41,7 +41,7 @@ class Recorditem extends \ManiaLive\Gui\Control {
         $this->frame->addComponent($this->label);
 
         $spacer = new \ManiaLib\Gui\Elements\Quad();
-        $spacer->setSize(2, 4);
+        $spacer->setSize(1, 4);
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
         $this->frame->addComponent($spacer);
 
@@ -49,7 +49,9 @@ class Recorditem extends \ManiaLive\Gui\Control {
         $this->nick->setAlign('left', 'center');
         $this->nick->setScale(0.7);
         $nickname = LocalRecords::$players[$record->login]->nickname;
-        $this->nick->setText( \ManiaLib\Utils\Formatting::stripCodes($nickname, "wos") );
+        $nickname = \ManiaLib\Utils\Formatting::stripCodes($nickname, "wos");
+        $nickname = \ManiaLib\Utils\Formatting::contrastColors($nickname, "777");
+        $this->nick->setText('$fff' . $nickname );
         $this->frame->addComponent($this->nick);
 
 
