@@ -15,6 +15,12 @@ class ManiaExchange extends \ManiaLive\PluginHandler\Plugin {
         
         if ($this->isPluginLoaded('Standard\Menubar'))
             $this->buildMenu();
+        
+         if ($this->isPluginLoaded('eXpansion\Menu')) {
+            $this->callPublicMethod('eXpansion\Menu', 'addSeparator', 'ManiaExchange', false);
+            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Search Maps', null, array($this, 'mxSearch'), false);       
+        }
+        
         $this->enableDedicatedEvents();
     }
 

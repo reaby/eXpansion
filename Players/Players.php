@@ -10,27 +10,33 @@ class Players extends \ManiaLive\PluginHandler\Plugin {
 
     public function onReady() {
         $this->enableDedicatedEvents();
-        
+
         if ($this->isPluginLoaded('Standard\Menubar'))
-            $this->buildMenu();    
+            $this->buildMenu();
+        
+        if ($this->isPluginLoaded('eXpansion\Menu')) {
+            $this->callPublicMethod('eXpansion\Menu', 'addSeparator', 'Players', false);
+            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Show Players', null, array($this, 'showPlayerList'), false);       
+        }
     }
-    
+
     public function onPlayerDisconnect($login) {
         \ManiaLivePlugins\eXpansion\Players\Gui\Windows\Playerlist::Erase($login);
     }
+
     public function buildMenu() {
         $this->callPublicMethod('Standard\Menubar', 'initMenu', \ManiaLib\Gui\Elements\Icons64x64_1::Buddy);
-        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Players', array($this, 'showPlayerList'), false);        
+        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Players', array($this, 'showPlayerList'), false);
     }
 
     public function showPlayerList($login) {
         \ManiaLivePlugins\eXpansion\Players\Gui\Windows\Playerlist::Erase($login);
         $window = \ManiaLivePlugins\eXpansion\Players\Gui\Windows\Playerlist::Create($login);
-        $window->setTitle('Players');    
-        $window->setSize(120, 100);    
-        $window->centerOnScreen();        
+        $window->setTitle('Players');
+        $window->setSize(120, 100);
+        $window->centerOnScreen();
         $window->show();
-   }
+    }
 
 }
 

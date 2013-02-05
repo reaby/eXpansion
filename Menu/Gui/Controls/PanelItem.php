@@ -3,7 +3,6 @@
 namespace ManiaLivePlugins\eXpansion\Menu\Gui\Controls;
 
 use ManiaLivePlugins\eXpansion\Gui\Elements\Button as myButton;
-use ManiaLivePlugins\eXpansion\LocalRecords\LocalRecords;
 
 class PanelItem extends \ManiaLive\Gui\Control {
 
@@ -13,71 +12,39 @@ class PanelItem extends \ManiaLive\Gui\Control {
     private $time;
     private $frame;
 
-    function __construct($index, \ManiaLivePlugins\eXpansion\LocalRecords\Structures\Record $record, $diffTime) {
-        $sizeX = 30;
-        $sizeY = 3;
+    function __construct(\ManiaLivePlugins\eXpansion\Menu\Structures\Menuitem $item) {
+        $this->sizeX = 30;
+        $this->sizeY = 5;
+        $this->setAlign("left", "top");
 
-        $this->frame = new \ManiaLive\Gui\Controls\Frame();
-        $this->frame->setSize($sizeX, $sizeY);
-        $this->frame->setLayout(new \ManiaLib\Gui\Layouts\Line());
-
-
-
-        $this->label = new \ManiaLib\Gui\Elements\Label(4, 4);
-        $this->label->setAlign('left', 'center');
-        $this->label->setScale(0.7);
-        $bold = "";
-        if ($index <= 3) $bold = '$o';
-        $this->label->setText('$fff' . $bold. $index);
-        $this->frame->addComponent($this->label);
-
-        $spacer = new \ManiaLib\Gui\Elements\Quad();
-        $spacer->setSize(1, 4);
-        $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
-       // $this->frame->addComponent($spacer);
-
-        $this->label = new \ManiaLib\Gui\Elements\Label(14, 4);
-        $this->label->setAlign('left', 'center');
-        $this->label->setScale(0.7);
-        $this->label->setText('$fff' . \ManiaLive\Utilities\Time::fromTM($record->time));        
-        $this->frame->addComponent($this->label);
-
-        $spacer = new \ManiaLib\Gui\Elements\Quad();
-        $spacer->setSize(1, 4);
-        $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
-        $this->frame->addComponent($spacer);
-
-        $this->nick = new \ManiaLib\Gui\Elements\Label(34, 4);
-        $this->nick->setAlign('left', 'center');
-        $this->nick->setScale(0.7);
-        $nickname = LocalRecords::$players[$record->login]->nickname;
-        $nickname = \ManiaLib\Utils\Formatting::stripCodes($nickname, "wos");
-        $nickname = \ManiaLib\Utils\Formatting::contrastColors($nickname, "777");
-        $this->nick->setText('$fff' . $nickname );
-        $this->frame->addComponent($this->nick);
-
-        $this->label = new \ManiaLib\Gui\Elements\Label(15, 4);
-        $this->label->setAlign('left', 'center');
-        $this->label->setScale(0.7);
-        if ($diffTime == 0)  {
-          $this->label->setText('$0f0+' . \ManiaLive\Utilities\Time::fromTM($diffTime));
+        if ($item->isSeparator) {
+            $this->doSeparator($item);
+            return;
         }
-        else {
-           $this->label->setText('$ff0' . \ManiaLive\Utilities\Time::fromTM($diffTime, true));
-        
-        }
-        $this->frame->addComponent($this->label);
-        
 
-        $this->addComponent($this->frame);
+        $action = \ManiaLive\Gui\ActionHandler::getInstance()->createAction($item->callback);
+        $button = new myButton(30, 6);
+        $button->setScale(0.6);
+        $button->setText($item->title);
+        $button->setAction($action);
 
-        $this->sizeX = $sizeX;
-        $this->sizeY = $sizeY;
-        $this->setSize($sizeX, $sizeY);
+        $this->addComponent($button);
     }
 
     protected function onResize($oldX, $oldY) {
         $this->frame->setSize($this->sizeX, $this->sizeY);
+    }
+
+    function doSeparator($item) {
+        $this->sizeY = 6;
+        $this->sizeX = 30;
+        $bg = new \ManiaLib\Gui\Elements\Quad(40, 6);
+        $bg->setBgcolor('0007');
+       // $this->addComponent($bg);
+        $label = new \ManiaLib\Gui\Elements\Label(30,4);
+        $label->setScale(0.9);
+        $label->setText('$fff$o$i' . $item->title);
+        $this->addComponent($label);
     }
 
     function onDraw() {

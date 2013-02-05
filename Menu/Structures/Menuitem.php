@@ -8,12 +8,13 @@ class Menuitem {
     public $icon;
     public $callback;
     public $isAdmin;
-
-    public function __construct($title, $icon, $callback, $isAdmin) {
+    public $isSeparator;
+    public function __construct($title, $icon, $callback, $isAdmin, $isSeparator = false) {        
         $this->title = $title;
         $this->icon = $icon;
         $this->callback = $callback;
         $this->isAdmin = $isAdmin;
+        $this->isSeparator = $isSeparator;
     }
 
 }

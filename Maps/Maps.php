@@ -9,9 +9,17 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
     }
 
     public function onReady() {
+        $this->enableDedicatedEvents();
+        
+        if ($this->isPluginLoaded('eXpansion\Menu')) {
+            $this->callPublicMethod('eXpansion\Menu', 'addSeparator', 'Maps', false);
+            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'List maps', null, array($this, 'showMapList'), false);
+            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Add map', null, array($this, 'addMaps'), true);
+        }
+        
         if ($this->isPluginLoaded('Standard\Menubar'))
             $this->buildMenu();
-        $this->enableDedicatedEvents();
+        
         
     }
 

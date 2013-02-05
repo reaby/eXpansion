@@ -61,7 +61,6 @@ class Window extends \ManiaLive\Gui\Window {
         $this->_minbutton->setImage($config->windowMinbutton);
         $this->_minbutton->setImageFocus($config->windowMinbuttonActive);
         $this->_minbutton->setPosZ($this->posZ - 1);
-
         $this->_windowFrame->addComponent($this->_minbutton);
 
 
@@ -161,8 +160,7 @@ class Window extends \ManiaLive\Gui\Window {
                                             isMinimized = True;                                                                                       
                                     }   
                                     if (Event.Type == CMlEvent::Type::MouseClick && Event.ControlId == "MainWindow") {                                            
-                                            isMinimized = False;
-                                            
+                                            isMinimized = False;                                            
                                     }                                  
                                     
                                 }

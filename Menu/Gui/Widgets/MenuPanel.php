@@ -2,7 +2,7 @@
 
 namespace ManiaLivePlugins\eXpansion\Menu\Gui\Widgets;
 
-use ManiaLivePlugins\eXpansion\Menu\Structures\PanelItem;
+use ManiaLivePlugins\eXpansion\Menu\Gui\Controls\PanelItem;
 
 class MenuPanel extends \ManiaLive\Gui\Window {
 
@@ -12,7 +12,7 @@ class MenuPanel extends \ManiaLive\Gui\Window {
     private $_mainWindow;
     private $_minButton;
     private $frame;
-    public static $menuItems;
+    public static $menuPlugin;    
 
     protected function onConstruct() {
         parent::onConstruct();
@@ -25,8 +25,7 @@ class MenuPanel extends \ManiaLive\Gui\Window {
         $this->setScriptEvents(true);
         $this->setAlign("left", "top");
 
-        $this->_windowFrame = new \ManiaLive\Gui\Controls\Frame();
-        $this->_windowFrame->setPosY(0);
+        $this->_windowFrame = new \ManiaLive\Gui\Controls\Frame();        
         $this->_windowFrame->setAlign("left", "top");
         $this->_windowFrame->setId("Frame");
         $this->_windowFrame->setScriptEvents(true);
@@ -39,10 +38,10 @@ class MenuPanel extends \ManiaLive\Gui\Window {
         $this->_mainWindow->setScriptEvents(true);
         $this->_windowFrame->addComponent($this->_mainWindow);
 
-        $this->_minButton = new \ManiaLib\Gui\Elements\Quad(5, 5);
+        $this->_minButton = new \ManiaLib\Gui\Elements\Quad(10, 10);
         $this->_minButton->setId("minimizeButton");
-        $this->_minButton->setStyle("Icons128x32_1");
-        $this->_minButton->setSubStyle("RT_Cup");
+        $this->_minButton->setStyle("Icons128x128_1");
+        $this->_minButton->setSubStyle("Options");
         $this->_minButton->setScriptEvents(true);
         $this->_minButton->setAlign("left", "center");
 
@@ -59,17 +58,18 @@ class MenuPanel extends \ManiaLive\Gui\Window {
                         declare Window <=> Page.GetFirstChild("' . $this->getId() . '");
                         declare mainWindow <=> Page.GetFirstChild("Frame");
                         declare isMinimized = False;                                          
-                        mainWindow.PosnX = 150.0;                        
-                        
+                        mainWindow.PosnX = 0.0;                        
+                                              
                         while(True) {
-                                if (isMinimized && mainWindow.PosnX <= 150) {                                        
-                                        mainWindow.PosnX += 4; 
+                                
+                                if (isMinimized && mainWindow.PosnX >= -30) {                                         
+                                        mainWindow.PosnX -= 4; 
                                         
                                 } 
                                 
-                                if (!isMinimized && mainWindow.PosnX >= 160) {                                     
-                                      mainWindow.PosnX -= 4;                                                                            
-                                }                          
+                                if (!isMinimized && mainWindow.PosnX <= 0) {                                                                           
+                                      mainWindow.PosnX += 4;                                                                            
+                                }                                              
                                 
                                 foreach (Event in PendingEvents) {                                                
                                     if (Event.Type == CMlEvent::Type::MouseClick && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
@@ -77,7 +77,8 @@ class MenuPanel extends \ManiaLive\Gui\Window {
                                     }                                       
                                 }
                                 yield;                        
-                        }                                    
+                        }  
+                        
                 } 
                 --></script>');
         $this->addComponent($xml);
@@ -86,23 +87,27 @@ class MenuPanel extends \ManiaLive\Gui\Window {
     function onResize($oldX, $oldY) {
         parent::onResize($oldX, $oldY);
         $this->_windowFrame->setSize(60, 12);
-        $this->_mainWindow->setSize(60, 60);
-        $this->_minButton->setPosition(60 - 6, -30);
+        $this->_mainWindow->setSize(60, 60);     
+        $this->_minButton->setPosition(-2, -30);
+                
     }
 
     function onShow() {
         
     }
-
-    function setMenuItems(array $menuItems) {
+   
+    
+    function setItems(array $menuItems) {
         $this->frame = new \ManiaLive\Gui\Controls\Frame();
         $this->frame->setAlign("left", "top");
-        $this->frame->setPosition(3, -4);
+        $this->frame->setPosition(8, -4);
         $this->frame->setLayout(new \ManiaLib\Gui\Layouts\Column(-1));
 
-        foreach ($menuItems as $menuItem) {
+        foreach ($menuItems as $menuItem) {  
+            if(!$menuItem->isAdmin || \ManiaLive\Features\Admin\AdminGroup::contains($this->getRecipient())) {
             $item = new PanelItem($menuItem);
             $this->frame->addComponent($item);
+            }
         }
         $this->_windowFrame->addComponent($this->frame);        
     }

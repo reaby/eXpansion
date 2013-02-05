@@ -15,7 +15,14 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
     function onReady() {
         //    $methods = get_class_methods($this->connection);
         if ($this->isPluginLoaded('Standard\Menubar'))
-            $this->buildMenu();
+            $this->buildStdMenu();
+
+        if ($this->isPluginLoaded('eXpansion\Menu')) {
+            $this->callPublicMethod('eXpansion\Menu', 'addSeparator', 'Server Management', true);
+            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Server Options', null, array($this, 'serverOptions'), true);
+            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Match Settings', null, array($this, 'matchSettings'), true);
+        }
+
 
         $this->enableDedicatedEvents();
 
@@ -29,7 +36,7 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
         if (\ManiaLive\Features\Admin\AdminGroup::contains($login)) {
             $info = AdminPanel::Create($login);
             $info->setSize(50, 20);
-            $info->setPosition(-160, -46);            
+            $info->setPosition(-160, -46);
             $info->show();
         }
     }
@@ -38,7 +45,7 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
         AdminPanel::Erase($login);
     }
 
-    public function buildMenu() {
+    public function buildStdMenu() {
         $this->callPublicMethod('Standard\Menubar', 'initMenu', \ManiaLib\Gui\Elements\Icons128x128_1::Options);
         $this->callPublicMethod('Standard\Menubar', 'addButton', 'Server Options', array($this, 'serverOptions'), true);
         $this->callPublicMethod('Standard\Menubar', 'addButton', 'Match Settings', array($this, 'matchSettings'), true);
