@@ -74,31 +74,54 @@ class LRPanel extends \ManiaLive\Gui\Window {
         $xml->setContent('
         <timeout>0</timeout>            
         <script><!--
-                       main () {
+                      main () {
                        
                         declare Window <=> Page.GetFirstChild("' . $this->getId() . '");
                         declare mainWindow <=> Page.GetFirstChild("Frame");
-                        declare isMinimized = False;                                          
+                        declare isMinimized = True;                                          
+                        declare lastAction = Now;
+                        declare autoCloseTimeout = 7500;
+                        declare positionMin = -50.0;
+                        declare positionMax = -4.0;
                         mainWindow.PosnX = -50.0;                        
-                        
+                                              
                         while(True) {
-                                if (isMinimized && mainWindow.PosnX <= -4) {                                        
-                                        mainWindow.PosnX += 4; 
-                                        
-                                } 
                                 
-                                if (!isMinimized && mainWindow.PosnX >= -50) {                                     
-                                      mainWindow.PosnX -= 4;                                                                            
-                                }                          
-                                
+                                if (isMinimized)
+                                {
+                                     if (mainWindow.PosnX >= positionMin) {                                          
+                                          mainWindow.PosnX -= 4;                                          
+                                    }
+                                }
+
+                                if (!isMinimized)
+                                {         
+                                    if (Now-lastAction > autoCloseTimeout) {                                          
+                                        if (mainWindow.PosnX <= positionMin) {                                                 
+                                                mainWindow.PosnX -= 4;                                      
+                                        } 
+                                        if (mainWindow.PosnX >= positionMin)  {
+                                                isMinimized = True;
+                                        }
+                                    }
+                                    
+                                    else {
+                                        if ( mainWindow.PosnX <= positionMax) {                                                      
+                                                  mainWindow.PosnX += 4;
+                                        }                                                                                                                                             
+                                    }
+                                }
+                                    
                                 foreach (Event in PendingEvents) {                                                
                                     if (Event.Type == CMlEvent::Type::MouseClick && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
-                                           isMinimized = !isMinimized;                                          
+                                           isMinimized = !isMinimized;    
+                                           lastAction = Now;                                           
                                     }                                       
                                 }
                                 yield;                        
-                        }                                    
-                } 
+                        }  
+                        
+                }
                 --></script>');
         $this->addComponent($xml);
     }

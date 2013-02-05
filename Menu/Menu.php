@@ -44,11 +44,11 @@ class Menu extends \ManiaLive\PluginHandler\Plugin {
     }
 
     function onPlayerConnect($login, $isSpectator) {
+        MenuPanel::Erase($login);
         $info = MenuPanel::Create($login);
         $info->setSize(60, 20);
         $info->setPosition(150, 50);
         $info->setItems($this->menuItems);
-
         $info->show();
     }
 

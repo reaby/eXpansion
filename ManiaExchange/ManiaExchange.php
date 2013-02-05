@@ -17,8 +17,8 @@ class ManiaExchange extends \ManiaLive\PluginHandler\Plugin {
             $this->buildMenu();
         
          if ($this->isPluginLoaded('eXpansion\Menu')) {
-            $this->callPublicMethod('eXpansion\Menu', 'addSeparator', 'ManiaExchange', false);
-            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Search Maps', null, array($this, 'mxSearch'), false);       
+            $this->callPublicMethod('eXpansion\Menu', 'addSeparator', 'ManiaExchange', true);
+            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Search Maps', null, array($this, 'mxSearch'), true);       
         }
         
         $this->enableDedicatedEvents();

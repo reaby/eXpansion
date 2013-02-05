@@ -42,8 +42,9 @@ class PanelItem extends \ManiaLive\Gui\Control {
         $bg->setBgcolor('0007');
        // $this->addComponent($bg);
         $label = new \ManiaLib\Gui\Elements\Label(30,4);
+        $label->setStyle("TextCardInfoSmall");
         $label->setScale(0.9);
-        $label->setText('$fff$o$i' . $item->title);
+        $label->setText('$fff' . $item->title);
         $this->addComponent($label);
     }
 
