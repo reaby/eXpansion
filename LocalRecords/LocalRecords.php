@@ -2,7 +2,8 @@
 
 namespace ManiaLivePlugins\eXpansion\LocalRecords;
 
-use ManiaLivePlugins\eXpansion\LocalRecords\Gui\Widgets\LRPanel;
+use \ManiaLivePlugins\eXpansion\LocalRecords\Gui\Widgets\LRPanel;
+use \ManiaLivePlugins\eXpansion\LocalRecords\Config;
 
 class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
 
@@ -198,7 +199,8 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
     }
 
     function sendText($text) {
-        if ($this->isPluginLoaded('eXpansion\Notifications')) {
+        
+        if (Config::getInstance()->sendNotices && $this->isPluginLoaded('eXpansion\Notifications')) {
             $this->callPublicMethod('eXpansion\Notifications', 'send', $text);
         } else {
             $this->connection->chatSendServerMessage($text);

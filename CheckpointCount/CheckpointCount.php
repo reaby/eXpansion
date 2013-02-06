@@ -27,7 +27,7 @@ class CheckpointCount extends \ManiaLive\PluginHandler\Plugin {
             CPPanel::EraseAll();
         else
             CPPanel::Erase($login);
-
+   
         $info = CPPanel::Create($login);
         $info->setSize(30, 6);
         $text = "-  / " . $this->storage->currentMap->nbCheckpoints;
@@ -47,13 +47,10 @@ class CheckpointCount extends \ManiaLive\PluginHandler\Plugin {
         $info->show();
     }
     
-    public function onPlayerFinish($playerUid, $login, $timeOrScore) {
+    public function onPlayerFinish($playerUid, $login, $timeOrScore) {           
         $this->displayWidget($login);
     }
     
-    public function onBeginMap($map, $warmUp, $matchContinuation) {
-        $this->displayWidget();
-    }
     public function onEndMap($rankings, $map, $wasWarmUp, $matchContinuesOnNextMap, $restartMap) {
         CPPanel::EraseAll();
     }
