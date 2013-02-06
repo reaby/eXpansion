@@ -4,6 +4,7 @@ namespace ManiaLivePlugins\eXpansion\Maps\Gui\Controls;
 
 use ManiaLivePlugins\eXpansion\Gui\Elements\Button as myButton;
 use \ManiaLib\Utils\Formatting;
+use \ManiaLivePlugins\eXpansion\Maps\Gui\Windows\Maplist;
 
 class Mapitem extends \ManiaLive\Gui\Control {
 
@@ -17,7 +18,7 @@ class Mapitem extends \ManiaLive\Gui\Control {
     private $removeMap;
     private $frame;
 
-    function __construct($indexNumber, \DedicatedApi\Structures\Map $map, $controller, $isAdmin) {
+    function __construct($indexNumber, $login, \DedicatedApi\Structures\Map $map, $controller, $isAdmin) {
         $sizeX = 120;
         $sizeY = 4;
         $this->isAdmin = $isAdmin;
@@ -62,7 +63,31 @@ class Mapitem extends \ManiaLive\Gui\Control {
         $this->time->setAlign('left', 'center');
         $this->time->setScale(0.8);
         $this->time->setText(\ManiaLive\Utilities\Time::fromTM($map->goldTime));
+        //$this->frame->addComponent($this->time);
+
+        $spacer = new \ManiaLib\Gui\Elements\Quad();
+        $spacer->setSize(2, 4);
+        $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
+        $this->frame->addComponent($spacer);
+
+        $this->time = new \ManiaLib\Gui\Elements\Label(4, 4);
+        $this->time->setAlign('left', 'center');
+        $this->time->setScale(0.8);
+        
+        if (array_key_exists($map->uId, Maplist::$records)) {
+            if (array_key_exists($login, Maplist::$records[$map->uId])) {              
+                
+                $place =Maplist::$records[$map->uId]->$login->place . ".";
+            } else {
+                $place = "-";
+            }
+        } else {
+            $place = "-";
+        }
+
+        $this->time->setText($place);
         $this->frame->addComponent($this->time);
+
 
         $spacer = new \ManiaLib\Gui\Elements\Quad();
         $spacer->setSize(4, 4);
