@@ -16,6 +16,10 @@ class Notifications extends \ManiaLive\PluginHandler\Plugin {
 
     function onReady() {
         $this->enableDedicatedEvents();
+        $this->send("test1");
+        $this->send("test2");
+        $this->send("test3");
+        $this->send("test4");
         $this->reDraw();
     }
 
@@ -24,6 +28,9 @@ class Notifications extends \ManiaLive\PluginHandler\Plugin {
             $item = new Item($icon, $message, $callback);
             $hash = spl_object_hash($item);
             $this->messages[$hash] = $item;
+            $array = array_reverse($this->messages, true);
+            $array = array_slice($array, 0, 7, true);
+            $this->messages = array_reverse($array, true);
             $this->reDraw();
         } else {
             \ManiaLive\Utilities\Console::println("Adding a button failed from plugin:" . $pluginid . " button callback is not valid.");

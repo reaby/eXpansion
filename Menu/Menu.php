@@ -12,7 +12,7 @@ class Menu extends \ManiaLive\PluginHandler\Plugin {
     function onInit() {
         $this->setVersion("0.0.1");
         $this->setPublicMethod("addItem");
-        $this->setPublicMethod("addSeparator");
+        $this->setPublicMethod("addSeparator");        
     }
 
     function onReady() {
@@ -29,7 +29,7 @@ class Menu extends \ManiaLive\PluginHandler\Plugin {
         if (is_callable($callback)) {
             $item = new Structures\Menuitem($title, $icon, $callback, $isAdmin);
             $hash = spl_object_hash($item);
-            $this->menuItems[$hash] = $item;
+            $this->menuItems[$hash] = $item;           
             $this->reDraw();
         } else {
             \ManiaLive\Utilities\Console::println("Adding a button failed from plugin:" . $pluginid . " button callback is not valid.");
