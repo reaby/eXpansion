@@ -28,8 +28,8 @@ class LRPanel extends \ManiaLive\Gui\Window {
         $this->_windowFrame->setPosY(0);
         $this->_windowFrame->setAlign("left", "top");
         $this->_windowFrame->setId("Frame");
-        $this->_windowFrame->setScriptEvents(true);
-
+        $this->_windowFrame->setScriptEvents(true);    
+        
         $this->_mainWindow = new \ManiaLib\Gui\Elements\Quad(60, 10);
         $this->_mainWindow->setId("myWindow");
         $this->_mainWindow->setStyle("BgsPlayerCard");
@@ -84,8 +84,25 @@ class LRPanel extends \ManiaLive\Gui\Window {
                         declare positionMin = -50.0;
                         declare positionMax = -4.0;
                         mainWindow.PosnX = -50.0;                        
-                                              
+                        declare blink = True;
+                        declare blinkDuration = 2000;
+                        declare blinkStartTime = Now;
+
+                            
+                      
+
                         while(True) {
+                              /*
+                              // Blink cannot be implemented since CMlControl doesnt have opacity :(((
+                              if (blink) {
+                                     if (Now-blinkStartTime < blinkDuration) {
+                                     declare seed =(Now-blinkStartTime)/1000;
+                                     Window.O
+                                     
+                                    } else {
+                                    blink = False;
+                                    }                                        
+                                } */
                                 
                                 if (isMinimized)
                                 {
@@ -94,6 +111,7 @@ class LRPanel extends \ManiaLive\Gui\Window {
                                     }
                                 }
 
+                            
                                 if (!isMinimized)
                                 {         
                                     if (Now-lastAction > autoCloseTimeout) {                                          
