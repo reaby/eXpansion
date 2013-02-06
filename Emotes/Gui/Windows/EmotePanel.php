@@ -99,9 +99,10 @@ class EmotePanel extends \ManiaLive\Gui\Window {
                         declare mainWindow <=> Page.GetFirstChild("Frame");
                         declare isMinimized = True;                                          
                         declare lastAction = Now;
-                        declare autoCloseTimeout = 7500;
+                        declare autoCloseTimeout = 4500;
                         declare positionMin = -50.0;
                         declare positionMax = -4.0;
+                        declare isMouseOver = False;
                         mainWindow.PosnX = -50.0;                        
                                               
                         while(True) {
@@ -115,7 +116,7 @@ class EmotePanel extends \ManiaLive\Gui\Window {
 
                                 if (!isMinimized)
                                 {         
-                                    if (Now-lastAction > autoCloseTimeout) {                                          
+                                    if (!isMouseOver && Now-lastAction > autoCloseTimeout) {                                          
                                         if (mainWindow.PosnX <= positionMin) {                                                 
                                                 mainWindow.PosnX -= 4;                                      
                                         } 
@@ -132,10 +133,14 @@ class EmotePanel extends \ManiaLive\Gui\Window {
                                 }
                                     
                                 foreach (Event in PendingEvents) {                                                
-                                    if (Event.Type == CMlEvent::Type::MouseClick && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
-                                           isMinimized = !isMinimized;    
+                                    if (Event.Type == CMlEvent::Type::MouseOver && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
+                                           isMinimized = False; 
+                                           isMouseOver = True;
                                            lastAction = Now;                                           
-                                    }                                       
+                                    }  
+                                    if (Event.Type == CMlEvent::Type::MouseOut) {
+                                        isMouseOver = False;
+                                    }
                                 }
                                 yield;                        
                         }  

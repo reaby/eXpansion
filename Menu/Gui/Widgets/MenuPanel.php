@@ -59,7 +59,8 @@ class MenuPanel extends \ManiaLive\Gui\Window {
                         declare mainWindow <=> Page.GetFirstChild("Frame");
                         declare isMinimized = True;                                          
                         declare lastAction = Now;
-                        declare autoCloseTimeout = 10000;
+                        declare autoCloseTimeout = 5000;
+                        declare isMouseOver = False;
                         declare positionMin = 0.0;
                         declare positionMax = -30.0;
                         mainWindow.PosnX = 0.0;                        
@@ -75,7 +76,7 @@ class MenuPanel extends \ManiaLive\Gui\Window {
 
                                 if (!isMinimized)
                                 {         
-                                    if (Now-lastAction > autoCloseTimeout) {                                          
+                                    if (!isMouseOver && Now-lastAction > autoCloseTimeout) {                                          
                                         if (mainWindow.PosnX <= positionMin) {                                                 
                                                 mainWindow.PosnX += 4;                                      
                                         } 
@@ -92,10 +93,14 @@ class MenuPanel extends \ManiaLive\Gui\Window {
                                 }
                                     
                                 foreach (Event in PendingEvents) {                                                
-                                    if (Event.Type == CMlEvent::Type::MouseClick && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
-                                           isMinimized = !isMinimized;    
+                                    if (Event.Type == CMlEvent::Type::MouseOver && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
+                                           isMinimized = False;
+                                           isMouseOver = True;
                                            lastAction = Now;                                           
-                                    }                                       
+                                    }     
+                                     if (Event.Type == CMlEvent::Type::MouseOut) {
+                                        isMouseOver = False;
+                                    }
                                 }
                                 yield;                        
                         }  

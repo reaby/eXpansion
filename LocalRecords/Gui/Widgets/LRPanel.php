@@ -28,8 +28,8 @@ class LRPanel extends \ManiaLive\Gui\Window {
         $this->_windowFrame->setPosY(0);
         $this->_windowFrame->setAlign("left", "top");
         $this->_windowFrame->setId("Frame");
-        $this->_windowFrame->setScriptEvents(true);    
-        
+        $this->_windowFrame->setScriptEvents(true);
+
         $this->_mainWindow = new \ManiaLib\Gui\Elements\Quad(60, 10);
         $this->_mainWindow->setId("myWindow");
         $this->_mainWindow->setStyle("BgsPlayerCard");
@@ -42,7 +42,7 @@ class LRPanel extends \ManiaLive\Gui\Window {
         $frame->setAlign("left", "top");
         $frame->setPosition(3, -4);
         $frame->setLayout(new \ManiaLib\Gui\Layouts\Column(-1));
-        
+
         $index = 1;
         $timeDiff = 0;
         $first = 0;
@@ -54,7 +54,7 @@ class LRPanel extends \ManiaLive\Gui\Window {
             } else {
                 $timeDiff = $record->time - $first;
             }
-            
+
             $frame->addComponent(new recordItem($index++, $record, $timeDiff));
         }
         $this->_windowFrame->addComponent($frame);
@@ -80,14 +80,14 @@ class LRPanel extends \ManiaLive\Gui\Window {
                         declare mainWindow <=> Page.GetFirstChild("Frame");
                         declare isMinimized = True;                                          
                         declare lastAction = Now;
-                        declare autoCloseTimeout = 7500;
+                        declare autoCloseTimeout = 3500;
                         declare positionMin = -50.0;
                         declare positionMax = -4.0;
                         mainWindow.PosnX = -50.0;                        
                         declare blink = True;
                         declare blinkDuration = 2000;
                         declare blinkStartTime = Now;
-
+                        declare isMouseOver = False;
                             
                       
 
@@ -114,7 +114,7 @@ class LRPanel extends \ManiaLive\Gui\Window {
                             
                                 if (!isMinimized)
                                 {         
-                                    if (Now-lastAction > autoCloseTimeout) {                                          
+                                    if (!isMouseOver && Now-lastAction > autoCloseTimeout) {                                          
                                         if (mainWindow.PosnX <= positionMin) {                                                 
                                                 mainWindow.PosnX -= 4;                                      
                                         } 
@@ -131,10 +131,18 @@ class LRPanel extends \ManiaLive\Gui\Window {
                                 }
                                     
                                 foreach (Event in PendingEvents) {                                                
-                                    if (Event.Type == CMlEvent::Type::MouseClick && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
-                                           isMinimized = !isMinimized;    
-                                           lastAction = Now;                                           
-                                    }                                       
+                                    if (Event.Type == CMlEvent::Type::MouseOver && (Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
+                                           isMinimized = False;
+                                           isMouseOver = True;
+                                           lastAction = Now;
+                                    }
+                                    if (Event.Type == CMlEvent::Type::MouseOut) {
+                                        isMouseOver = False;
+                                    }
+                                    
+                                    if (!isMinimized && Event.Type == CMlEvent::Type::MouseClick && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
+                                        isMinimized = True;
+                                    }
                                 }
                                 yield;                        
                         }  

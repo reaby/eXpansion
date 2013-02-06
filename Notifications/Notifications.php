@@ -16,10 +16,6 @@ class Notifications extends \ManiaLive\PluginHandler\Plugin {
 
     function onReady() {
         $this->enableDedicatedEvents();
-        $this->send("test1");
-        $this->send("test2");
-        $this->send("test3");
-        $this->send("test4");
         $this->reDraw();
     }
 

@@ -82,9 +82,7 @@ class Maplist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
     
     
     function populateList() { 
-        echo "clear\n";
         $this->storage = \ManiaLive\Data\Storage::getInstance();
-        echo "mapcount in populate:".count($this->storage->maps)."\n";
         $this->pager->clearItems();
 
         $x = 0;
