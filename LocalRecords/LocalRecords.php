@@ -176,16 +176,25 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
             
             // todo: possible add different message if player enhances own record... 
             if ($oldRecord !== null) {
-                $diff = \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time - $oldRecord->time, true);
-                 $this->connection->chatSendServerMessage('$o$03CC$04Co$06Dn$07Dg$08Er$09Ea$0BFt$0CFu$0CFl$1DFa$2DFt$3EFi$4EFo$5FFn$6FFs!$z$s '. $actionColor . '$o' . $this->records[$login]->place . '$o'. $suffix. $color.'  for ' . $actionColor . \ManiaLib\Utils\Formatting::stripCodes($player->nickName, "wos").'$z$s'. $color.  ' with a time of $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time) . '$o'. $color .' $n(' . $diff.')');
+                $diff = \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time - $oldRecord->time, true);                
+                 $this->sendText('$o$03CC$04Co$06Dn$07Dg$08Er$09Ea$0BFt$0CFu$0CFl$1DFa$2DFt$3EFi$4EFo$5FFn$6FFs!$z$s '. $actionColor . '$o' . $this->records[$login]->place . '$o'. $suffix. $color.'  for ' . $actionColor . \ManiaLib\Utils\Formatting::stripCodes($player->nickName, "wos").'$z$s'. $color.  ' with a time of $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time) . '$o'. $color .' $n(' . $diff.')');
                 return;
             }            
-                $this->connection->chatSendServerMessage('$o$03CC$04Co$06Dn$07Dg$08Er$09Ea$0BFt$0CFu$0CFl$1DFa$2DFt$3EFi$4EFo$5FFn$6FFs!$z$s '. $actionColor . '$o' . $this->records[$login]->place . '$o'. $suffix. $color. '  for ' . $actionColor . \ManiaLib\Utils\Formatting::stripCodes($player->nickName, "wos").'$z$s'. $color.  ' with a time of $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time));
+                $this->sendText('$o$03CC$04Co$06Dn$07Dg$08Er$09Ea$0BFt$0CFu$0CFl$1DFa$2DFt$3EFi$4EFo$5FFn$6FFs!$z$s '. $actionColor . '$o' . $this->records[$login]->place . '$o'. $suffix. $color. '  for ' . $actionColor . \ManiaLib\Utils\Formatting::stripCodes($player->nickName, "wos").'$z$s'. $color.  ' with a time of $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time));
         } catch (\Exception $e) {
             \ManiaLive\Utilities\Console::println("Error: couldn't show localrecords message" . $e->getMessage());
         }
     }
-
+    function sendText($text) {        
+        if ($this->isPluginLoaded('eXpansion\Notifications')) {
+            $this->callPublicMethod('eXpansion\Notifications', 'send', $text);
+        }
+        else {
+            $this->connection->chatSendServerMessage($text);
+        }
+                
+        
+    }
     function syncPlayers() {
         $db = $this->db->query("Select * FROM exp_players")->fetchArrayOfAssoc();
         foreach ($db as $array)
@@ -197,10 +206,10 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
         $player->fromPlayerObj($this->storage->getPlayerObject($login));
         $this->db->execute($player->exportToDb());
         self::$players[$login] = $player;
+        
     }
 
-    public
-            function onPlayerDisconnect($login) {
+    function onPlayerDisconnect($login) {
         
     }
 

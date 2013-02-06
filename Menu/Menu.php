@@ -53,9 +53,7 @@ class Menu extends \ManiaLive\PluginHandler\Plugin {
     }
 
     public function onPlayerDisconnect($login) {
-        MenuPanel::Erase($login);
-        if (isset($this->timeStamps[$login]))
-            unset($this->timeStamps[$login]);
+        MenuPanel::Erase($login);       
     }
 
 }
