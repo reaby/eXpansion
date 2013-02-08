@@ -101,6 +101,10 @@ class MenuPanel extends \ManiaLive\Gui\Window {
                                      if (Event.Type == CMlEvent::Type::MouseOut) {
                                         isMouseOver = False;
                                     }
+                                    
+                                /*    if (!isMinimized && Event.Type == CMlEvent::Type::MouseClick && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
+                                        isMinimized = True;
+                                    } */
                                 }
                                 yield;                        
                         }  

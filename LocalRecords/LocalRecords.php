@@ -111,10 +111,10 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
         $info->show();
     }
 
-    function getRecords($pluginId = null) {        
+    function getRecords($pluginId = null) {
         $data = $this->db->query("SELECT * from exp_records; ")->fetchArrayOfObject();
         $outArray = array();
-        foreach ($data as $record) {                        
+        foreach ($data as $record) {
             $outArray[$record->uid] = json_decode($record->records);
         }
         return $outArray;
@@ -185,8 +185,7 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
                     $suffix = "rd";
                     break;
             }
-
-            // todo: possible add different message if player enhances own record... 
+            
             if ($oldRecord !== null) {
                 $diff = \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time - $oldRecord->time, true);
                 $this->sendText('$o$03CC$04Co$06Dn$07Dg$08Er$09Ea$0BFt$0CFu$0CFl$1DFa$2DFt$3EFi$4EFo$5FFn$6FFs!$z$s ' . $actionColor . '$o' . $this->records[$login]->place . '$o' . $suffix . $color . '  for ' . $actionColor . \ManiaLib\Utils\Formatting::stripCodes($player->nickName, "wos") . '$z$s' . $color . ' with a time of $o' . $actionColor . \ManiaLive\Utilities\Time::fromTM($this->records[$login]->time) . '$o' . $color . ' $n(' . $diff . ')');
@@ -199,7 +198,7 @@ class LocalRecords extends \ManiaLive\PluginHandler\Plugin {
     }
 
     function sendText($text) {
-        
+
         if (Config::getInstance()->sendNotices && $this->isPluginLoaded('eXpansion\Notifications')) {
             $this->callPublicMethod('eXpansion\Notifications', 'send', $text);
         } else {

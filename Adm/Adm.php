@@ -3,6 +3,7 @@
 namespace ManiaLivePlugins\eXpansion\Adm;
 
 use \ManiaLivePlugins\eXpansion\Adm\Gui\Windows\ServerOptions;
+use \ManiaLivePlugins\eXpansion\Adm\Gui\Windows\GameOptions;
 use ManiaLive\Gui\ActionHandler;
 use ManiaLivePlugins\eXpansion\Adm\Gui\Windows\AdminPanel;
 
@@ -20,7 +21,9 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
         if ($this->isPluginLoaded('eXpansion\Menu')) {
             $this->callPublicMethod('eXpansion\Menu', 'addSeparator', 'Server Management', true);
             $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Server Options', null, array($this, 'serverOptions'), true);
+            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Game Options', null, array($this, 'gameOptions'), true);
             $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Match Settings', null, array($this, 'matchSettings'), true);
+            
         }
 
 
@@ -48,6 +51,7 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
     public function buildStdMenu() {
         $this->callPublicMethod('Standard\Menubar', 'initMenu', \ManiaLib\Gui\Elements\Icons128x128_1::Options);
         $this->callPublicMethod('Standard\Menubar', 'addButton', 'Server Options', array($this, 'serverOptions'), true);
+        $this->callPublicMethod('Standard\Menubar', 'addButton', 'Game Options', array($this, 'gameOptions'), true);
         $this->callPublicMethod('Standard\Menubar', 'addButton', 'Match Settings', array($this, 'matchSettings'), true);
     }
 
@@ -58,7 +62,15 @@ class Adm extends \ManiaLive\PluginHandler\Plugin {
         $window->setSize(160, 100);
         $window->show();
     }
-
+    
+    public function gameOptions($login) {
+        $window = GameOptions::Create($login);
+        $window->setTitle('Game Options');
+        $window->centerOnScreen();
+        $window->setSize(160, 100);
+        $window->show();
+    }
+    
     public function matchSettings($login) {
         $window = Gui\Windows\MatchSettings::Create($login);
         $window->setTitle('Match Settings');

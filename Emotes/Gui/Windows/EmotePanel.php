@@ -93,19 +93,35 @@ class EmotePanel extends \ManiaLive\Gui\Window {
         $xml->setContent('
         <timeout>0</timeout>            
         <script><!--
-                        main () {
+                      main () {
                        
                         declare Window <=> Page.GetFirstChild("' . $this->getId() . '");
                         declare mainWindow <=> Page.GetFirstChild("Frame");
                         declare isMinimized = True;                                          
                         declare lastAction = Now;
-                        declare autoCloseTimeout = 4500;
+                        declare autoCloseTimeout = 3500;
                         declare positionMin = -50.0;
                         declare positionMax = -4.0;
-                        declare isMouseOver = False;
                         mainWindow.PosnX = -50.0;                        
-                                              
+                        declare blink = True;
+                        declare blinkDuration = 2000;
+                        declare blinkStartTime = Now;
+                        declare isMouseOver = False;
+                            
+                      
+
                         while(True) {
+                              /*
+                              // Blink cannot be implemented since CMlControl doesnt have opacity :(((
+                              if (blink) {
+                                     if (Now-blinkStartTime < blinkDuration) {
+                                     declare seed =(Now-blinkStartTime)/1000;
+                                     Window.O
+                                     
+                                    } else {
+                                    blink = False;
+                                    }                                        
+                                } */
                                 
                                 if (isMinimized)
                                 {
@@ -114,6 +130,7 @@ class EmotePanel extends \ManiaLive\Gui\Window {
                                     }
                                 }
 
+                            
                                 if (!isMinimized)
                                 {         
                                     if (!isMouseOver && Now-lastAction > autoCloseTimeout) {                                          
@@ -133,13 +150,17 @@ class EmotePanel extends \ManiaLive\Gui\Window {
                                 }
                                     
                                 foreach (Event in PendingEvents) {                                                
-                                    if (Event.Type == CMlEvent::Type::MouseOver && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
-                                           isMinimized = False; 
+                                    if (Event.Type == CMlEvent::Type::MouseOver && (Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
+                                           isMinimized = False;
                                            isMouseOver = True;
-                                           lastAction = Now;                                           
-                                    }  
+                                           lastAction = Now;
+                                    }
                                     if (Event.Type == CMlEvent::Type::MouseOut) {
                                         isMouseOver = False;
+                                    }
+                                    
+                                    if (!isMinimized && Event.Type == CMlEvent::Type::MouseClick && ( Event.ControlId == "myWindow" || Event.ControlId == "minimizeButton" )) {
+                                        isMinimized = True;
                                     }
                                 }
                                 yield;                        
