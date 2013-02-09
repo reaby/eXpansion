@@ -74,6 +74,7 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
     }
 
     public function addMaps($login) {
+        Gui\Windows\addMaps::Erase($login);
         $window = Gui\Windows\addMaps::Create($login);
         $window->setTitle('Add Maps on server');
         $window->centerOnScreen();

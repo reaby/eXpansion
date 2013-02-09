@@ -58,7 +58,7 @@ class AddMaps extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
         
         $maps = glob($path);
         $x = 0;
-        if (count($maps) > 1) {
+        if (count($maps) >= 1) {
         foreach ($maps as $map)
             $this->pager->addItem(new Additem($x++, $map, $this));
         }
