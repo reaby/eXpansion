@@ -23,7 +23,7 @@ class Window extends \ManiaLive\Gui\Window {
         $this->_closeAction = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($this, 'closeWindow'));
         $this->_windowFrame = new \ManiaLive\Gui\Controls\Frame($this->sizeX, $this->sizeY);
         $this->_windowFrame->setScriptEvents(true);       
-        $this->_windowFrame->setAlign("center", "top");
+        $this->_windowFrame->setAlign("left", "top");
 
 
         $this->_mainWindow = new \ManiaLib\Gui\Elements\Quad($this->sizeX, $this->sizeY);
