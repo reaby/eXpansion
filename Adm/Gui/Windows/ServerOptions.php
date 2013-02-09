@@ -17,14 +17,14 @@ class ServerOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
     private $frameInputbox, $frameLadder;
     private $buttonOK, $buttonCancel;
     private $connection;
-    public static $actionOK, $actionCancel;
+    private  $actionOK, $actionCancel;
 
     function onConstruct() {
         parent::onConstruct();
         $config = \ManiaLive\DedicatedApi\Config::getInstance();
         $this->connection = \DedicatedApi\Connection::factory($config->host, $config->port);
-        ServerOptions::$actionOK = ActionHandler::getInstance()->createAction(array($this, "serverOptionsOk"));        
-        ServerOptions::$actionCancel = ActionHandler::getInstance()->createAction(array($this, "serverOptionsCancel"));
+        $this->actionOK = ActionHandler::getInstance()->createAction(array($this, "serverOptionsOk"));        
+        $this->actionCancel = ActionHandler::getInstance()->createAction(array($this, "serverOptionsCancel"));
         
         $this->setTitle('Server Options');
 
@@ -179,12 +179,12 @@ class ServerOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
         $this->buttonOK = new OkButton();
         $this->buttonOK->setText("Apply");
-        $this->buttonOK->setAction(self::$actionOK);
+        $this->buttonOK->setAction($this->actionOK);
         $frame->addComponent($this->buttonOK);
 
         $this->buttonCancel = new OkButton();
         $this->buttonCancel->setText("Cancel");
-        $this->buttonCancel->setAction(self::$actionCancel);
+        $this->buttonCancel->setAction($this->actionCancel);
         $frame->addComponent($this->buttonCancel);
 
         $this->frameCb->addComponent($frame);
@@ -195,6 +195,8 @@ class ServerOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
     }
 
     function destroy() {
+        ActionHandler::getInstance()->deleteAction($this->actionOK);
+        ActionHandler::getInstance()->deleteAction($this->actionCancel);
         parent::destroy();
     }
 
@@ -210,9 +212,7 @@ class ServerOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
         $this->frameCb->setPosition($this->sizeX / 2 + 20, -$this->sizeY / 2);
     }
 
-    public function serverOptionsOk($login) {
-        print "ok";
-        
+    public function serverOptionsOk($login) {              
         $server = \ManiaLive\Data\Storage::getInstance()->server;
 
         $serverOptions = Array(
@@ -233,12 +233,11 @@ class ServerOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
 
         $this->connection->setServerOptions($serverOptions);
-
-        $this->hide();
+        $this->Erase($this->getRecipient());
+        
     }
 
     public function serverOptionsCancel($login) {
-        print "cancel";
-        $this->hide();
+        $this->Erase($this->getRecipient());
     }
 }

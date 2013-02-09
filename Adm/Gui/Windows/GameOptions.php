@@ -16,7 +16,7 @@ class GameOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
     private $frameInputbox, $frameLadder;
     private $buttonOK, $buttonCancel;
     private $connection;
-    private $actionOK, $actionCancel;
+    private $actionOK, $actionCancel, $actionTa, $actionRounds, $actionLaps, $actionCup, $actionTeam;
 
     function onConstruct() {
         parent::onConstruct();
@@ -95,6 +95,13 @@ class GameOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
     }
 
     function destroy() {
+        ActionHandler::getInstance()->deleteAction($this->actionCancel);
+        ActionHandler::getInstance()->deleteAction($this->actionOK);
+        ActionHandler::getInstance()->deleteAction($this->actionCup);
+        ActionHandler::getInstance()->deleteAction($this->actionLaps);
+        ActionHandler::getInstance()->deleteAction($this->actionRounds);
+        ActionHandler::getInstance()->deleteAction($this->actionTa);
+        ActionHandler::getInstance()->deleteAction($this->actionTeam);
         parent::destroy();
     }
 
@@ -140,6 +147,6 @@ class GameOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
     public function Cancel($login) {
         $this->hide();
-    }
-
+    }    
+    
 }

@@ -91,7 +91,7 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $this->pager->addItem(new Playeritem($x++, $player, $this, \ManiaLive\Features\Admin\AdminGroup::contains($login)));
     }
 
-    function destroy() {
+    function destroy() {            
         parent::destroy();
     }
 

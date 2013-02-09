@@ -78,7 +78,6 @@ class Playeritem extends \ManiaLive\Gui\Control {
     }
 
     function __destruct() {
-
         //       \ManiaLive\Gui\ActionHandler::getInstance()->removeAction($this->chooseNextMap);
     }
 

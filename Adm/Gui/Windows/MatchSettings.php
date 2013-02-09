@@ -74,6 +74,7 @@ class MatchSettings extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
     }
 
     function destroy() {
+        $this->pager->destroy();
         parent::destroy();
     }
 

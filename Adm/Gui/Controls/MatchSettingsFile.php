@@ -78,7 +78,19 @@ class MatchSettingsFile extends \ManiaLive\Gui\Control {
     function onDraw() {
         
     }
-
+    function onIsRemoved(\ManiaLive\Gui\Container $target) {
+        ActionHandler::getInstance()->deleteAction($this->saveAction);
+        ActionHandler::getInstance()->deleteAction($this->loadAction);
+        echo "destroy";
+        parent::onIsRemoved($target);
+    }
+    
+    function destroy() {
+        ActionHandler::getInstance()->deleteAction($this->saveAction);
+        ActionHandler::getInstance()->deleteAction($this->loadAction);
+        echo "destroy";
+        parent::destroy();
+    }
     function __destruct() {
         
     }

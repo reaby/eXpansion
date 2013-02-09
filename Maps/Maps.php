@@ -12,12 +12,14 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
 
     public function onReady() {
         $this->enableDedicatedEvents();
+        Gui\Windows\Maplist::$mapsPlugin = $this;
 
         if ($this->isPluginLoaded('eXpansion\Menu')) {
             $this->callPublicMethod('eXpansion\Menu', 'addSeparator', 'Maps', false);
             $this->callPublicMethod('eXpansion\Menu', 'addItem', 'List maps', null, array($this, 'showMapList'), false);
             $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Add map', null, array($this, 'addMaps'), true);
         }
+
 
         if ($this->isPluginLoaded('Standard\Menubar'))
             $this->buildMenu();
@@ -62,7 +64,7 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
 
     public function showMapList($login) {
         Gui\Windows\Maplist::Erase($login);
-        
+
         if ($this->isPluginLoaded('eXpansion\LocalRecords'))
             Gui\Windows\MapList::$records = $this->callPublicMethod('eXpansion\LocalRecords', 'getRecords');
 
@@ -71,6 +73,34 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
         $window->centerOnScreen();
         $window->setSize(120, 100);
         $window->show();
+    }
+
+    public function removeMap($login, $mapNumber) {
+        if (!\ManiaLive\Features\Admin\AdminGroup::contains($login)) {
+            $this->connection->chatSendServerMessage("You are not allowed to do this!", $login);
+            return;
+        }
+
+        try {
+
+            $player = $this->storage->players[$login];
+            $map = $this->storage->maps[$mapNumber];
+            $this->connection->chatSendServerMessage($player->nickName . '$z$s$fff removed map ' . $map->name . '$z$s$fff from the playlist.');
+            $this->connection->removeMap($map->fileName);
+        } catch (\Exception $e) {
+            $this->connection->chatSendServerMessage('$f00$oError $z$s$fff$o' . $e->getMessage());
+        }
+    }
+
+    public function onMapListModified($curMapIndex, $nextMapIndex, $isListModified) {
+        if ($isListModified) {
+            $windows = Gui\Windows\Maplist::GetAll();
+
+            foreach ($windows as $window) {  
+               $login = $window->getRecipient();          
+               $this->showMapList($login);
+            }
+        }
     }
 
     public function addMaps($login) {

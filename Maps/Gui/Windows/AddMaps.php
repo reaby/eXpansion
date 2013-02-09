@@ -48,8 +48,7 @@ class AddMaps extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
         $this->populateList();
     }
 
-    function populateList() {
-        $this->storage = \ManiaLive\Data\Storage::getInstance();
+    function populateList() {     
         $this->pager->clearItems();
 
 

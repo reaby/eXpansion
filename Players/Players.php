@@ -13,15 +13,28 @@ class Players extends \ManiaLive\PluginHandler\Plugin {
 
         if ($this->isPluginLoaded('Standard\Menubar'))
             $this->buildMenu();
-        
+
         if ($this->isPluginLoaded('eXpansion\Menu')) {
             $this->callPublicMethod('eXpansion\Menu', 'addSeparator', 'Players', false);
-            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Show Players', null, array($this, 'showPlayerList'), false);       
+            $this->callPublicMethod('eXpansion\Menu', 'addItem', 'Show Players', null, array($this, 'showPlayerList'), false);
         }
     }
 
     public function onPlayerDisconnect($login) {
         \ManiaLivePlugins\eXpansion\Players\Gui\Windows\Playerlist::Erase($login);
+        $this->updateOpenedWindows();
+    }
+    
+    public function onPlayerConnect($login, $isSpectator) {
+        $this->updateOpenedWindows();        
+    }
+    
+    public function updateOpenedWindows() {
+        $windows = \ManiaLivePlugins\eXpansion\Players\Gui\Windows\Playerlist::GetAll();
+        foreach ($windows as $window) {
+            $login = $window->getRecipient();
+            $this->showPlayerList($login);
+        }
     }
 
     public function buildMenu() {

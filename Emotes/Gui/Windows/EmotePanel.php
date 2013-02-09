@@ -188,6 +188,10 @@ class EmotePanel extends \ManiaLive\Gui\Window {
     }
 
     function destroy() {
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->actionAfk);
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->actionGG);
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->actionBG);
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->actionLOL);
         parent::destroy();
     }
 

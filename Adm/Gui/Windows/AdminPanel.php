@@ -188,6 +188,10 @@ class AdminPanel extends \ManiaLive\Gui\Window {
     }
 
     function destroy() {
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->actionCancelVote);
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->actionEndRound);
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->actionRestart);
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->actionSkip);
         parent::destroy();
     }
 

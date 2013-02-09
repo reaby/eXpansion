@@ -118,10 +118,13 @@ class Playeritem extends \ManiaLive\Gui\Control {
     function onDraw() {
         
     }
-
-    function __destruct() {
-
-        //       \ManiaLive\Gui\ActionHandler::getInstance()->removeAction($this->chooseNextMap);
+    
+    function __destruct() {        
+        ActionHandler::getInstance()->deleteAction($this->kickAction);
+        ActionHandler::getInstance()->deleteAction($this->banAction);
+        ActionHandler::getInstance()->deleteAction($this->forceAction);
+        echo "playerItem remove";
+     
     }
 
 }

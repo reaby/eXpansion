@@ -13,16 +13,16 @@ class Window extends \ManiaLive\Gui\Window {
     public $_mainText;
     public $_closebutton;
     public $_minbutton;
+    public $_closeAction;
+    
     public $_windowFrame;
 
     protected function onConstruct() {
         parent::onConstruct();
         $config = Config::getInstance();
-        // $this->setId("theWindow");
-        // $this->setScale(0);
+        $this->_closeAction = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($this, 'closeWindow'));
         $this->_windowFrame = new \ManiaLive\Gui\Controls\Frame($this->sizeX, $this->sizeY);
-        $this->_windowFrame->setScriptEvents(true);
-        // $this->_windowFrame->setId("Window");
+        $this->_windowFrame->setScriptEvents(true);       
         $this->_windowFrame->setAlign("center", "top");
 
 
@@ -52,6 +52,7 @@ class Window extends \ManiaLive\Gui\Window {
         $this->_closebutton->setImage($config->windowClosebutton);
         $this->_closebutton->setImageFocus($config->windowClosebuttonActive);
         $this->_closebutton->setPosZ($this->posZ - 1);
+        $this->_closebutton->setAction($this->_closeAction);
         $this->_windowFrame->addComponent($this->_closebutton);
 
         $this->_minbutton = new \ManiaLib\Gui\Elements\Quad(5, 5);
@@ -203,8 +204,15 @@ class Window extends \ManiaLive\Gui\Window {
     function setTitle($text) {
         $this->_title->setText('$fff' . $text);
     }
-
+    
+    function closeWindow() {
+        echo "closed!";
+        $this->Erase($this->getRecipient());
+    
+    
+    }
     function destroy() {
+       \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->_closeAction);
         parent::destroy();
     }
 

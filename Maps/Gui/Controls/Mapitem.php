@@ -110,12 +110,12 @@ class Mapitem extends \ManiaLive\Gui\Control {
         }
 
         // disabled... todo: get remove button to refresh the tracklist
-        /*
+        
           $this->removeButton = new MyButton(16,6);
           $this->removeButton->setText("Remove");
           $this->removeButton->setAction($this->removeMap);
           $this->removeButton->setScale(0.6);
-          $this->frame->addComponent($this->removeButton); */
+          $this->frame->addComponent($this->removeButton); 
 
         $this->addComponent($this->frame);
 
@@ -133,10 +133,15 @@ class Mapitem extends \ManiaLive\Gui\Control {
         
     }
 
-    function __destruct() {
-
-        //       \ManiaLive\Gui\ActionHandler::getInstance()->removeAction($this->chooseNextMap);
+    function destroy() {
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->chooseNextMap);
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->gotoMap);
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->removeMap);
+        parent::destroy();
     }
+
+        
+    
 
 }
 ?>
