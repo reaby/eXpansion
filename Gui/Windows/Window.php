@@ -206,7 +206,6 @@ class Window extends \ManiaLive\Gui\Window {
     }
     
     function closeWindow() {
-        echo "closed!";
         $this->Erase($this->getRecipient());
     
     

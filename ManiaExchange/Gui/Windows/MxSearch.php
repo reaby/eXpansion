@@ -53,9 +53,10 @@ class MxSearch extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
         
     }
 
-    public function search($trackname) {
-
-        $query = 'http://tm.mania-exchange.com/tracksearch?mode=0&vm=0&trackname=' . rawurlencode($trackname) . '&mtype=All&tpack=All&priord=3&limit=40&environments=1&tracksearch&api=on&format=json';
+    public function search($login, $trackname, $author) {
+        print $trackname."->".$author;
+        
+        $query = 'http://tm.mania-exchange.com/tracksearch?mode=0&vm=0&trackname=' . rawurlencode($trackname) . '&author=' . rawurlencode($author) . '&mtype=All&tpack=All&priord=2&limit=40&environments=1&tracksearch&api=on&format=json';
         $ch = curl_init($query);
         curl_setopt($ch, CURLOPT_USERAGENT, "Manialive/eXpansion MXapi [search] ver 0.1");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -86,6 +87,7 @@ class MxSearch extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $item = new MxMap($x++, $map, $this, \ManiaLive\Features\Admin\AdminGroup::contains($login));
             $this->pager->addItem($item);
         }
+        $this->redraw();     
     }
 
     function addMap($login, $mapId) {

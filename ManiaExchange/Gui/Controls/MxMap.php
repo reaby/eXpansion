@@ -11,13 +11,15 @@ class MxMap extends \ManiaLive\Gui\Control {
     private $label;
     private $time;
     private $addAction;
+    private $actionSearch;
     private $frame;
-    
+
     function __construct($indexNumber, \ManiaLivePlugins\eXpansion\ManiaExchange\Structures\MxMap $map, $controller, $isAdmin) {
         $sizeX = 120;
         $sizeY = 4;
         $this->isAdmin = $isAdmin;
         $this->addAction = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'addMap'), $map->trackID);
+        $this->actionSearch = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'search'), "", $map->username);
 
         $this->frame = new \ManiaLive\Gui\Controls\Frame();
         $this->frame->setSize($sizeX, $sizeY);
@@ -42,7 +44,10 @@ class MxMap extends \ManiaLive\Gui\Control {
 
         $info = new \ManiaLib\Gui\Elements\Label(25, 4);
         $info->setAlign('left', 'center');
-        $info->setText($map->username);
+        $info->setText('$000'.$map->username);
+        $info->setAction($this->actionSearch);
+        $info->setStyle("TextCardSmallScores2");        
+        $info->setScriptEvents(true);
         $this->frame->addComponent($info);
 
         $this->time = new \ManiaLib\Gui\Elements\Label(20, 4);
@@ -51,7 +56,7 @@ class MxMap extends \ManiaLive\Gui\Control {
         $this->frame->addComponent($this->time);
 
         $info = new \ManiaLib\Gui\Elements\Label(4, 4);
-        $info->setAlign('left', 'center');        
+        $info->setAlign('left', 'center');
         $info->setText($map->awardCount);
         $this->frame->addComponent($info);
 
@@ -65,7 +70,7 @@ class MxMap extends \ManiaLive\Gui\Control {
             $this->addButton = new MyButton(16, 5);
             $this->addButton->setScale(0.7);
             $this->addButton->setText("Install");
-            $this->addButton->setAction($this->addAction);            
+            $this->addButton->setAction($this->addAction);
             $this->frame->addComponent($this->addButton);
         }
 
@@ -85,7 +90,7 @@ class MxMap extends \ManiaLive\Gui\Control {
 
     protected function onResize($oldX, $oldY) {
         //$this->bg->setSize($this->sizeX, $this->sizeY);
-        $this->frame->setSize($this->sizeX, $this->sizeY+1);
+        $this->frame->setSize($this->sizeX, $this->sizeY + 1);
         //  $this->button->setPosx($this->sizeX - $this->button->sizeX);
     }
 
@@ -93,9 +98,10 @@ class MxMap extends \ManiaLive\Gui\Control {
         
     }
 
-    function __destruct() {
-
-        //       \ManiaLive\Gui\ActionHandler::getInstance()->removeAction($this->chooseNextMap);
+    function destroy() {
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->addAction);
+        \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->actionSearch);
+        parent::destroy();
     }
 
 }

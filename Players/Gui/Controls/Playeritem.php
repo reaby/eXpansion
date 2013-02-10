@@ -28,7 +28,7 @@ class Playeritem extends \ManiaLive\Gui\Control {
         $this->banAction = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'banPlayer'), $player->login);
         $this->forceAction = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'toggleSpec'), $player->login);
 
-        // stupid background...
+// stupid background...
         /* $this->bg = new \ManiaLib\Gui\Elements\Quad($sizeX, $sizeY);
           $this->bg->setAlign('left', 'center');
           if ($indexNumber % 2 == 0) {
@@ -48,13 +48,19 @@ class Playeritem extends \ManiaLive\Gui\Control {
         $spacer->setSize(4, 4);
         $spacer->setAlign("center", "center2");
         $spacer->setStyle("Icons64x64_1");
-        $spacer->setSubStyle("Buddy");
+
+        if ($player->forceSpectator == 1 || $player->isSpectator)
+            $spacer->setSubStyle("Camera");
+        else
+            $spacer->setSubStyle("Buddy");
+
+
         $this->frame->addComponent($spacer);
 
         $spacer = new \ManiaLib\Gui\Elements\Quad();
         $spacer->setSize(4, 4);
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
-        //$this->frame->addComponent($spacer);
+//$this->frame->addComponent($spacer);
 
         $this->login = new \ManiaLib\Gui\Elements\Label(20, 4);
         $this->login->setAlign('left', 'center');
@@ -74,7 +80,7 @@ class Playeritem extends \ManiaLive\Gui\Control {
 
         $this->frame->addComponent($spacer);
 
-        // admin additions
+// admin additions
         if ($this->isAdmin) {
 
             $this->forceButton = new MyButton(24, 6);
@@ -104,29 +110,28 @@ class Playeritem extends \ManiaLive\Gui\Control {
     }
 
     protected function onResize($oldX, $oldY) {
-        // $this->frame->setSize($this->sizeX, $this->sizeY);
-        //  $this->button->setPosx($this->sizeX - $this->button->sizeX);
-		if ($this->isAdmin) {
-			if ($this->player->forceSpectator == 0 || $this->player->forceSpectator == 2) {
-				$this->forceButton->setText("Force Spec");
-			} else {
-				$this->forceButton->setText("Release Spec");
-			}
-		}
+// $this->frame->setSize($this->sizeX, $this->sizeY);
+//  $this->button->setPosx($this->sizeX - $this->button->sizeX);
+        if ($this->isAdmin) {
+            if ($this->player->forceSpectator == 1 || $this->player->isSpectator) {
+                $this->forceButton->setText("Release Spec");
+            } else {
+                $this->forceButton->setText("Force Spec");
+            }
+        }
     }
 
-    function onDraw() {
-        
-    }
-    
-    function __destruct() {        
-        ActionHandler::getInstance()->deleteAction($this->kickAction);
-        ActionHandler::getInstance()->deleteAction($this->banAction);
-        ActionHandler::getInstance()->deleteAction($this->forceAction);
-        echo "playerItem remove";
-     
-    }
+        function onDraw() {
+            
+        }
 
-}
-?>
+        function __destruct() {
+            ActionHandler::getInstance()->deleteAction($this->kickAction);
+            ActionHandler::getInstance()->deleteAction($this->banAction);
+            ActionHandler::getInstance()->deleteAction($this->forceAction);
+            echo "playerItem remove";
+        }
+
+    }
+    ?>
 

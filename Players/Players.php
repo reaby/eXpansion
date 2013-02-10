@@ -50,6 +50,12 @@ class Players extends \ManiaLive\PluginHandler\Plugin {
         $window->centerOnScreen();
         $window->show();
     }
+    
+    public function onPlayerInfoChanged($playerInfo) {
+         $this->updateOpenedWindows();                 
+   }
+    
+    
 
 }
 

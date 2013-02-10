@@ -39,7 +39,10 @@ class ManiaExchange extends \ManiaLive\PluginHandler\Plugin {
                 $this->addMap($login, $param);
                 break;
             case "search":
-                $this->mxSearch($login, $param);
+                $this->mxSearch($login, $param, "");
+                break;
+            case "author":
+                $this->mxSearch($login, "", $param);
                 break;
             case "help":
             default:
@@ -48,10 +51,10 @@ class ManiaExchange extends \ManiaLive\PluginHandler\Plugin {
         }
     }
 
-    public function mxSearch($login, $search = "test") {
+    public function mxSearch($login, $search = "", $author = "") {
         $window = Gui\Windows\MxSearch::Create($login);
         $window->setTitle('ManiaExchange');
-        $window->search($search);
+        $window->search("", $search, $author);
         $window->centerOnScreen();
         $window->setSize(140, 100);
         $window->show();

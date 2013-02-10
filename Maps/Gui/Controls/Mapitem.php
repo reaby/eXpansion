@@ -21,6 +21,7 @@ class Mapitem extends \ManiaLive\Gui\Control {
     function __construct($indexNumber, $login, \DedicatedApi\Structures\Map $map, $controller, $isAdmin) {
         $sizeX = 120;
         $sizeY = 4;
+     
         $this->isAdmin = $isAdmin;
         $this->chooseNextMap = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'chooseNextMap'), $indexNumber);
         $this->gotoMap = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'gotoMap'), $indexNumber);
@@ -53,18 +54,26 @@ class Mapitem extends \ManiaLive\Gui\Control {
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
         //$this->frame->addComponent($spacer);
 
-        $this->label = new \ManiaLib\Gui\Elements\Label(90, 4);
+        $this->label = new \ManiaLib\Gui\Elements\Label(60, 4);
         $this->label->setAlign('left', 'center');
-        $this->label->setText(Formatting::stripColors(Formatting::stripStyles($map->name)));
+        $this->label->setText(Formatting::contrastColors($map->name, "999f"));
         $this->label->setScale(0.8);
         $this->frame->addComponent($this->label);
 
-        $this->time = new \ManiaLib\Gui\Elements\Label(16, 4);
+        $this->time = new \ManiaLib\Gui\Elements\Label(20, 4);
         $this->time->setAlign('left', 'center');
         $this->time->setScale(0.8);
-        $this->time->setText(\ManiaLive\Utilities\Time::fromTM($map->goldTime));
-        //$this->frame->addComponent($this->time);
-
+        $this->time->setText($map->author);
+        //$this->time->setText(\ManiaLive\Utilities\Time::fromTM($map->goldTime));
+        $this->frame->addComponent($this->time);
+        
+        $ui = new \ManiaLib\Gui\Elements\Label(20, 4);
+        $ui->setAlign('left', 'center');
+        $ui->setScale(0.8);
+        $ui->setText($map->mapStyle);
+        //$this->time->setText(\ManiaLive\Utilities\Time::fromTM($map->goldTime));
+        $this->frame->addComponent($ui);
+     
         $spacer = new \ManiaLib\Gui\Elements\Quad();
         $spacer->setSize(2, 4);
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);

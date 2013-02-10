@@ -38,7 +38,7 @@ class GameOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
     // Generate all inputboxes
     private function genGameModes() {
-        
+
         $this->frameGameMode = new \ManiaLive\Gui\Controls\Frame();
         $this->frameGameMode->setAlign("left", "top");
         $this->frameGameMode->setLayout(new \ManiaLib\Gui\Layouts\Line());
@@ -85,8 +85,10 @@ class GameOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
         $button->setValue(GameInfos::GAMEMODE_TEAM);
         if ($nextGameInfo->gameMode == GameInfos::GAMEMODE_TEAM)
             $button->setActive();
-        $this->frameGameMode->addComponent($button);      
-        // end of players
+        $this->frameGameMode->addComponent($button);
+        
+        $this->frameGameMode->setPosition(4, -10);
+        $this->frameGameMode->setScale(0.7);
         $this->mainFrame->addComponent($this->frameGameMode);
     }
 
@@ -106,13 +108,11 @@ class GameOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
     }
 
     function onResize($oldX, $oldY) {
-        parent::onResize($oldX, $oldY);        
-        $this->frameGameMode->setPosition(4,-10);
-        
+        parent::onResize($oldX, $oldY);
     }
 
     function setGameMode($login, $gameMode) {
-        try {            
+        try {
             switch ($gameMode) {
                 case GameInfos::GAMEMODE_TIMEATTACK:
                     $mode = "Time Attack";
@@ -128,15 +128,17 @@ class GameOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
                     break;
                 case GameInfos::GAMEMODE_TEAM:
                     $mode = "Team";
-                    break;                
+                    break;
                 default:
                     $mode = $gameMode;
             }
-            var_dump($gameMode);
             $this->connection->setGameMode($gameMode);
-            $this->connection->chatSendServerMessage('$fff Next Gamemode is now set to $o'. $mode);
+            $this->connection->chatSendServerMessage('$fff Next Gamemode is now set to $o' . $mode);
+            $this->mainFrame->removeComponent($this->frameGameMode);
+            $this->genGameModes();
+            $this->redraw();
         } catch (\Exception $e) {
-            $this->connection->chatSendServerMessage('$f00$oError! $o$fff'. $e->getMessage(), $this->getRecipient());
+            $this->connection->chatSendServerMessage('$f00$oError! $o$fff' . $e->getMessage(), $this->getRecipient());
         }
     }
 
@@ -147,6 +149,6 @@ class GameOptions extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
 
     public function Cancel($login) {
         $this->hide();
-    }    
-    
+    }
+
 }

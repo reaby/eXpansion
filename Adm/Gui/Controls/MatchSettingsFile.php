@@ -37,7 +37,7 @@ class MatchSettingsFile extends \ManiaLive\Gui\Control {
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
         //$this->frame->addComponent($spacer);
 
-        $this->label = new \ManiaLib\Gui\Elements\Label(110, 4);
+        $this->label = new \ManiaLib\Gui\Elements\Label(90, 4);
         $this->label->setAlign('left', 'center');
         $file = explode('/', $filename);
         $this->label->setText(utf8_encode(end($file)));
@@ -80,15 +80,13 @@ class MatchSettingsFile extends \ManiaLive\Gui\Control {
     }
     function onIsRemoved(\ManiaLive\Gui\Container $target) {
         ActionHandler::getInstance()->deleteAction($this->saveAction);
-        ActionHandler::getInstance()->deleteAction($this->loadAction);
-        echo "destroy";
+        ActionHandler::getInstance()->deleteAction($this->loadAction);        
         parent::onIsRemoved($target);
     }
     
     function destroy() {
         ActionHandler::getInstance()->deleteAction($this->saveAction);
-        ActionHandler::getInstance()->deleteAction($this->loadAction);
-        echo "destroy";
+        ActionHandler::getInstance()->deleteAction($this->loadAction);  
         parent::destroy();
     }
     function __destruct() {

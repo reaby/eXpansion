@@ -31,7 +31,9 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $player = $this->storage->getPlayerObject($target);
             $admin = $this->storage->getPlayerObject($login);
             $this->connection->kick($target, "Please behave next time you visit the server!");
-            $this->connection->sendNotice($this->storage->players, $player->nickName . '$z were kicked from the server by admin.');
+            $this->connection->chatSendServerMessage($player->nickName . '$z were kicked from the server by admin.');
+             // can't use notice...since $this->storage->players too slow.
+            // $this->connection->sendNotice($this->storage->players, $player->nickName . '$z were kicked from the server by admin.');
         } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff' . $e->getMessage());
         }
@@ -43,7 +45,8 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $player = $this->storage->getPlayerObject($target);
             $admin = $this->storage->getPlayerObject($login);
             $this->connection->ban($target, "You are now banned from the server.");
-            $this->connection->sendNotice($this->storage->players, $player->nickName . '$z has been banned from the server.');
+            $this->connection->chatSendServerMessage($player->nickName . '$z has been banned from the server.');
+            //$this->connection->sendNotice($this->storage->players, $player->nickName . '$z has been banned from the server.');
         } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff$o' . $e->getMessage());
         }
@@ -53,7 +56,7 @@ class Playerlist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
         try {
             $player = $this->storage->getPlayerObject($target);
 
-            if ($player->forceSpectator == 2 || $player->forceSpectator == 0) {
+            if ($player->forceSpectator == 0) {
                 $this->connection->forceSpectator($target, 1);
                 $this->connection->sendNotice($target, '$f00Admin has forced you to specate!');
             }
