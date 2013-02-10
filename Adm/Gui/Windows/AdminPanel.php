@@ -45,8 +45,8 @@ class AdminPanel extends \ManiaLive\Gui\Window {
 
         $this->_mainWindow = new \ManiaLib\Gui\Elements\Quad(60, 10);
         $this->_mainWindow->setId("MainWindow");
-        $this->_mainWindow->setStyle("BgsPlayerCard");
-        $this->_mainWindow->setSubStyle("BgPlayerCardBig");
+        $this->_mainWindow->setStyle("Bgs1InRace");
+        $this->_mainWindow->setSubStyle("BgList");
         $this->_mainWindow->setAlign("left", "center");
         $this->_windowFrame->addComponent($this->_mainWindow);
 

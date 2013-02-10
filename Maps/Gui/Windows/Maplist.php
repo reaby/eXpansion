@@ -48,9 +48,8 @@ class Maplist extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $this->hide();
             $this->connection->setNextMapIndex($mapNumber);
             $map = $this->connection->getNextMapInfo();
-            $player = $this->storage->players[$login];
-
-            $this->connection->chatSendServerMessage("The next map will be " . $map->name . '$z$s$fff by ' . $map->author);
+            $player = $this->storage->players[$login];           
+            $this->connection->chatSendServerMessage("The next map will be " . $map->name . '$z$s$fff by ' . $map->author);        
         } catch (\Exception $e) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff$o' . $e->getMessage());
         }

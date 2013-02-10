@@ -40,10 +40,12 @@ class Maps extends \ManiaLive\PluginHandler\Plugin {
 
         // user call votes disabled since dedicated doesn't support them atm.
         //  $this->callPublicMethod('Standard\Menubar', 'addButton', 'Vote for skip map', array($this, 'voteSkip'), false);
-        //  $this->callPublicMethod('Standard\Menubar', 'addButton', 'Vote for replay map', array($this, 'voteRestart'), false);
+          $this->callPublicMethod('Standard\Menubar', 'addButton', 'Vote for replay map', array($this, 'voteRestart'), false);
     }
 
     public function voteRestart($login) {
+    //    $this->connection->callVoteRestartMap();
+               
         $vote = new \DedicatedApi\Structures\Vote();
         $vote->callerLogin = $login;
         $vote->cmdName = "Cmd name";
