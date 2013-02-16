@@ -91,11 +91,11 @@ class Window extends \ManiaLive\Gui\Window {
                         declare Vec3 LastDelta = <Window.RelativePosition.X, Window.RelativePosition.Y, 0.0>;
                         declare Vec3 DeltaPos = <0.0, 0.0, 0.0>;
                         declare Real lastMouseX = 0.0;
-                        declare Real lastMouseY =0.0;                        
-                        
-                        while(True) {
+                        declare Real lastMouseY =0.0;                                 
+                                                                               
+                        while(True) {                                                               
                                 
-                                
+                               
                                 if (MoveWindow) {                                                                                                    
                                     DeltaPos.X = MouseX - lastMouseX;
                                     DeltaPos.Y = MouseY - lastMouseY;
@@ -172,6 +172,7 @@ class Window extends \ManiaLive\Gui\Window {
                 } 
                 --></script>');
         $this->addComponent($xml);
+        $this->setPositionZ(-75);
     }
 
     function onResize($oldX, $oldY) {
@@ -191,6 +192,7 @@ class Window extends \ManiaLive\Gui\Window {
         $this->_minbutton->setPosition($this->sizeX - 5, 0);
         $this->mainFrame->setSize($this->sizeX - 4, $this->sizeY - 8);
         //$this->mainFrame->setPosY(-6);
+        $this->setPositionZ(-75);
     }
 
     function onShow() {

@@ -18,7 +18,11 @@ class MxMap extends \ManiaLive\Gui\Control {
         $sizeX = 120;
         $sizeY = 4;
         $this->isAdmin = $isAdmin;
-        $this->addAction = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'addMap'), $map->trackID);
+        $id = $map->trackID;
+        if (property_exists($map, "mapID"))
+            $id = $map->mapID;
+
+        $this->addAction = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'addMap'), $id);
         $this->actionSearch = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'search'), "", $map->username);
 
         $this->frame = new \ManiaLive\Gui\Controls\Frame();
@@ -44,9 +48,9 @@ class MxMap extends \ManiaLive\Gui\Control {
 
         $info = new \ManiaLib\Gui\Elements\Label(25, 4);
         $info->setAlign('left', 'center');
-        $info->setText('$000'.$map->username);
+        $info->setText('$000' . $map->username);
         $info->setAction($this->actionSearch);
-        $info->setStyle("TextCardSmallScores2");        
+        $info->setStyle("TextCardSmallScores2");
         $info->setScriptEvents(true);
         $this->frame->addComponent($info);
 

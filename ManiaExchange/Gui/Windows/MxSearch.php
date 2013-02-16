@@ -54,16 +54,36 @@ class MxSearch extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
     }
 
     public function search($login, $trackname, $author) {
-        print $trackname."->".$author;
+
+
+        $script = $this->connection->getModeScriptInfo();
+        $query = "";        
         
-        $query = 'http://tm.mania-exchange.com/tracksearch?mode=0&vm=0&trackname=' . rawurlencode($trackname) . '&author=' . rawurlencode($author) . '&mtype=All&tpack=All&priord=2&limit=40&environments=1&tracksearch&api=on&format=json';
+        switch ($script->name) {
+            case "ShootMania\Royal":
+                $query = 'http://sm.mania-exchange.com/tracksearch?mode=0&vm=0&mtype=RoyalArena&trackname=' . rawurlencode($trackname) . '&author=' . rawurlencode($author) . '&priord=2&limit=40&environments=1&tracksearch&api=on&format=json';
+                break;
+            case "ShootMania\Melee":
+                $query = 'http://sm.mania-exchange.com/tracksearch?mode=0&vm=0&mtype=MeleeArena&trackname=' . rawurlencode($trackname) . '&author=' . rawurlencode($author) . '&priord=2&limit=40&environments=1&tracksearch&api=on&format=json';
+                break;
+            case "ShootMania\Battle":
+                $query = 'http://sm.mania-exchange.com/tracksearch?mode=0&vm=0&mtype=BattleArena&trackname=' . rawurlencode($trackname) . '&author=' . rawurlencode($author) . '&priord=2&limit=40&environments=1&tracksearch&api=on&format=json';
+                break;
+            case "ShootMania\Elite":
+                $query = 'http://sm.mania-exchange.com/tracksearch?mode=0&vm=0&mtype=EliteArena&trackname=' . rawurlencode($trackname) . '&author=' . rawurlencode($author) . '&priord=2&limit=40&environments=1&tracksearch&api=on&format=json';
+                break;
+            default:
+                $query = 'http://tm.mania-exchange.com/tracksearch?mode=0&vm=0&trackname=' . rawurlencode($trackname) . '&author=' . rawurlencode($author) . '&mtype=All&tpack=All&priord=2&limit=40&environments=1&tracksearch&api=on&format=json';
+                break;
+        }        
+        
         $ch = curl_init($query);
         curl_setopt($ch, CURLOPT_USERAGENT, "Manialive/eXpansion MXapi [search] ver 0.1");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $data = curl_exec($ch);
         $status = curl_getinfo($ch);
         curl_close($ch);
-        
+
         if ($data === false) {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff MX is down', $login);
             return;
@@ -73,7 +93,7 @@ class MxSearch extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $this->connection->chatSendServerMessage('$f00$oError $z$s$fff MX returned http error code:' . $status["http_code"], $login);
             return;
         }
-        
+
 
         //print_r(json_decode($json, true));
 
@@ -87,7 +107,7 @@ class MxSearch extends \ManiaLivePlugins\eXpansion\Gui\Windows\Window {
             $item = new MxMap($x++, $map, $this, \ManiaLive\Features\Admin\AdminGroup::contains($login));
             $this->pager->addItem($item);
         }
-        $this->redraw();     
+        $this->redraw();
     }
 
     function addMap($login, $mapId) {

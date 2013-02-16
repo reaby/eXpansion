@@ -21,7 +21,7 @@ class Mapitem extends \ManiaLive\Gui\Control {
     function __construct($indexNumber, $login, \DedicatedApi\Structures\Map $map, $controller, $isAdmin) {
         $sizeX = 120;
         $sizeY = 4;
-     
+
         $this->isAdmin = $isAdmin;
         $this->chooseNextMap = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'chooseNextMap'), $indexNumber);
         $this->gotoMap = \ManiaLive\Gui\ActionHandler::getInstance()->createAction(array($controller, 'gotoMap'), $indexNumber);
@@ -66,14 +66,14 @@ class Mapitem extends \ManiaLive\Gui\Control {
         $this->time->setText($map->author);
         //$this->time->setText(\ManiaLive\Utilities\Time::fromTM($map->goldTime));
         $this->frame->addComponent($this->time);
-        
+
         $ui = new \ManiaLib\Gui\Elements\Label(20, 4);
         $ui->setAlign('left', 'center');
         $ui->setScale(0.8);
         $ui->setText($map->mapStyle);
         //$this->time->setText(\ManiaLive\Utilities\Time::fromTM($map->goldTime));
         $this->frame->addComponent($ui);
-     
+
         $spacer = new \ManiaLib\Gui\Elements\Quad();
         $spacer->setSize(2, 4);
         $spacer->setStyle(\ManiaLib\Gui\Elements\Icons64x64_1::EmptyIcon);
@@ -82,11 +82,11 @@ class Mapitem extends \ManiaLive\Gui\Control {
         $this->time = new \ManiaLib\Gui\Elements\Label(4, 4);
         $this->time->setAlign('left', 'center');
         $this->time->setScale(0.8);
-        
+
         if (array_key_exists($map->uId, Maplist::$records)) {
-            if (array_key_exists($login, Maplist::$records[$map->uId])) {              
-                
-                $place =Maplist::$records[$map->uId]->$login->place . ".";
+            if (array_key_exists($login, Maplist::$records[$map->uId])) {
+
+                $place = Maplist::$records[$map->uId]->$login->place . ".";
             } else {
                 $place = "-";
             }
@@ -116,15 +116,17 @@ class Mapitem extends \ManiaLive\Gui\Control {
             $this->goButton->setAction($this->gotoMap);
             $this->goButton->setScale(0.6);
             $this->frame->addComponent($this->goButton);
+
+            $this->removeButton = new MyButton(16, 6);
+            $this->removeButton->setText("Remove");
+            $this->removeButton->setAction($this->removeMap);
+            $this->removeButton->setScale(0.6);
+            $this->frame->addComponent($this->removeButton);
         }
 
         // disabled... todo: get remove button to refresh the tracklist
-        
-          $this->removeButton = new MyButton(16,6);
-          $this->removeButton->setText("Remove");
-          $this->removeButton->setAction($this->removeMap);
-          $this->removeButton->setScale(0.6);
-          $this->frame->addComponent($this->removeButton); 
+
+
 
         $this->addComponent($this->frame);
 
@@ -148,9 +150,6 @@ class Mapitem extends \ManiaLive\Gui\Control {
         \ManiaLive\Gui\ActionHandler::getInstance()->deleteAction($this->removeMap);
         parent::destroy();
     }
-
-        
-    
 
 }
 ?>

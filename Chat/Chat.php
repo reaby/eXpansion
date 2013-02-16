@@ -78,6 +78,8 @@ class Chat extends \ManiaLive\PluginHandler\Plugin {
             try {
                 if (AdminGroup::contains($login)) {
                     $this->connection->chatSendServerMessage("\$fff" . $config->adminSign . " $nick\$z\$s" . $config->adminChatColor . "  " . $text);
+                } elseif ($source_player->isManagedByAnOtherServer) {
+                    $this->connection->chatSendServerMessage("\$fff$nick\$z\$s" . $config->otherServerChatColor . "  " . $text);
                 } else {
                     $this->connection->chatSendServerMessage("\$fff$nick\$z\$s" . $config->publicChatColor . "  " . $text);
                 }
@@ -99,4 +101,5 @@ class Chat extends \ManiaLive\PluginHandler\Plugin {
     }
 
 }
+
 ?>
